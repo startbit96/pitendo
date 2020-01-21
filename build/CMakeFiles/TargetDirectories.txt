@@ -1,0 +1,3 @@
+/home/pi/Documents/repos/pintendo/build/CMakeFiles/rebuild_cache.dir
+/home/pi/Documents/repos/pintendo/build/CMakeFiles/pintendo.dir
+/home/pi/Documents/repos/pintendo/build/CMakeFiles/edit_cache.dir

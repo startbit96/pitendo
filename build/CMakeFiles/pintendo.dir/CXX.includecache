@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../inc/controller.h
+
+../inc/display.h
+
+/home/pi/Documents/repos/pintendo/main.cpp
+iostream
+-
+controller.h
+/home/pi/Documents/repos/pintendo/controller.h
+display.h
+/home/pi/Documents/repos/pintendo/display.h
+
+/home/pi/Documents/repos/pintendo/src/controller.cpp
+controller.h
+/home/pi/Documents/repos/pintendo/src/controller.h
+iostream
+-
+wiringPi.h
+-
+

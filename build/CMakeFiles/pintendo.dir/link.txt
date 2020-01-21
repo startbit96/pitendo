@@ -1,0 +1,1 @@
+/usr/bin/g++-8  -g   CMakeFiles/pintendo.dir/main.cpp.o CMakeFiles/pintendo.dir/src/controller.cpp.o CMakeFiles/pintendo.dir/src/display.cpp.o  -o pintendo -lwiringPi 
