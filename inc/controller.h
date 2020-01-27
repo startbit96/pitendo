@@ -54,6 +54,28 @@ Aenderungshistorie:
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
+// Pin-Belegung.
+#define DEF_PIN_BTN_GRUEN_C1        0
+#define DEF_PIN_BTN_ROT_C1          2
+#define DEF_PIN_BTN_BLAU_C1         3
+#define DEF_PIN_BTN_GELB_C1         21
+#define DEF_PIN_BTN_START_C1        22
+#define DEF_PIN_BTN_GRUEN_C2        26
+#define DEF_PIN_BTN_ROT_C2          6
+#define DEF_PIN_BTN_BLAU_C2         5
+#define DEF_PIN_BTN_GELB_C2         4
+#define DEF_PIN_BTN_START_C2        1
+
+// Anzahl Buttons pro Controller.
+#define DEF_NUM_BUTTONS             5
+
+
+
+// ##############################################################################
+// #####                        KLASSE BUTTON                               #####
+// ##############################################################################
+
+
 class Button {
     public:
         // Konstruktur und Destruktor.
@@ -67,23 +89,30 @@ class Button {
         bool wasPressed();      // Ermittelt, ob der Button seit dem letzten Abruf gedrueckt wurde.
                                 // Setzt im Anschluss den boolschen Wert zurueck (refresh).
                                 // Umsetzung mittels Interrupt.
+        bool bPressed;          // Speichert, ob der Button seit dem letzten Abruf gedrueckt wurde.
 
         // Public-Attribute.
-        void* buttonFunktion(void); // Zeiger auf die hinter dem Button liegende Funktion.
+        void (*buttonFunktion)(void); // Zeiger auf die hinter dem Button liegende Funktion.
                                     // (Bedarf noch unklar, evtl. wird Abfrage des Button-Status und 
                                     // die daraus folgende Aktion direkt im Spiel implementiert.)
+
+        // Statische Methoden.
+        static void defaultButtonFunktion();    // Mit dieser Funktion wird jeder neue Button zu beginnt
+                                                // initialisiert.
+    
     protected:
 
     private:
-        // Private-Methoden.
-        void pressedInterrupt(void);    // Wird durch einen wiringPi-Interrupt aufgerufen.
-                                        // Setzt den boolschen Wert bPressed auf true.
-
         // Private Attribute.
         int pinNummer;          // GPIO-Nummer des digitalen Eingangs.
-        bool bPressed;          // Speichert, ob der Button seit dem letzten Abruf gedrueckt wurde.
     
 }; // Klasse Button.
+
+
+// ##############################################################################
+// #####                        KLASSE JOYSTICK                             #####
+// ##############################################################################
+
 
 class Joystick {
     public:
@@ -96,8 +125,7 @@ class Joystick {
         void getPosition(float &x, float &y);   // Ermittelt die Joystick-Lage.
 
         // Public-Attribute.
-        // ################################################## PINS DEFINIEREN!!! 
-        Button joystickButton;   // Button, welcher bei Hineindruecken des Joysticks aktiviert wird.
+        Button* joystickButton;   // Button, welcher bei Hineindruecken des Joysticks aktiviert wird.
 
     protected:
 
@@ -105,30 +133,68 @@ class Joystick {
     
 }; // Klasse Joystick.
 
+
+// ##############################################################################
+// #####                        KLASSE CONTROLLER                           #####
+// ##############################################################################
+
+
 class Controller {
     public:
         // Konstruktor und Destruktor.
-        Controller();
+        Controller(     int pinButtonGruen,
+                        int pinButtonRot, 
+                        int pinButtonGelb,
+                        int pinButtonBlau,
+                        int pinButtonStart);
         ~Controller();
 
         // Public-Methoden.
         void refresh();     // Setzt die Werte aller Buttons zurueck.
+        void execute();     // Fuehrt die Funktionen aller Buttons aus, sollten
+                            // sie gedrueckt wurden sein.
 
         // Public-Attribute.
         // Buttons.
-        Button buttonGruen(0);
-        Button buttonRot(1);
-        Button buttonGelb(2);
-        Button buttonBlau(3);
-        Button buttonStart(4);
-
-        // Joystick.
-        Joystick joystick();
-
+        Button* buttonGruen;
+        Button* buttonRot;
+        Button* buttonGelb;
+        Button* buttonBlau;
+        Button* buttonStart;
+        
     protected:
 
     private:
+        // Fuer den schnelleren Zugriff.
+        Button* buttonHandler[DEF_NUM_BUTTONS];
 
 }; // Klasse Controller.
+
+
+// ##############################################################################
+// #####                        ALLGEMEIN                                   #####
+// ##############################################################################
+
+
+// Zwei globale Objekte des Typs Controller.
+extern Controller* controllerP1;
+extern Controller* controllerP2;
+
+// Funktionen fuer die Interrupts.
+// Controller 1.
+void interruptButtonGruenC1(void);
+void interruptButtonRotC1(void);
+void interruptButtonBlauC1(void);
+void interruptButtonGelbC1(void);
+void interruptButtonStartC1(void);
+// Controller 2.
+void interruptButtonGruenC2(void);
+void interruptButtonRotC2(void);
+void interruptButtonBlauC2(void);
+void interruptButtonGelbC2(void);
+void interruptButtonStartC2(void);
+
+// Initialisiert die beiden Controller und deren Funktionalitaeten.
+bool controllerSetup();
 
 #endif /*!_CONTROLLER_H_*/
