@@ -32,10 +32,9 @@ int main(int argc, char** argv) {
             cerr << "Installiere erst mittels \"sudo apt-get install xterm\" den Terminal-Emulator." << endl;
             return -1;
         }
-        else {
-            // Starte Pintendo in einem neuen Display und beende das Programm auf diesem Terminal.
-            
-        }   
+        
+        // Ueberpruefe, ob die Schriftart "square.ttf" bereits installiert wurde.
+        
 
     }
 
