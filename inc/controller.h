@@ -54,17 +54,33 @@ Aenderungshistorie:
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
-// Pin-Belegung.
+// Pin-Belegung der Buttons.
 #define DEF_PIN_BTN_GRUEN_C1        0
 #define DEF_PIN_BTN_ROT_C1          2
 #define DEF_PIN_BTN_BLAU_C1         3
 #define DEF_PIN_BTN_GELB_C1         21
 #define DEF_PIN_BTN_START_C1        22
+#define DEF_PIN_BTN_JOYSTICK_C1     24
 #define DEF_PIN_BTN_GRUEN_C2        26
 #define DEF_PIN_BTN_ROT_C2          6
 #define DEF_PIN_BTN_BLAU_C2         5
 #define DEF_PIN_BTN_GELB_C2         4
 #define DEF_PIN_BTN_START_C2        1
+#define DEF_PIN_BTN_JOYSTICK_C2     28
+
+// Pin-Belegung der Controller-Erkennung.
+#define DEF_PIN_CHECK_C1            25
+#define DEF_PIN_CHECK_C2            29
+
+// Definition SPI-Schnittstelle.
+#define DEF_SPI_CHANNEL             0
+#define DEF_SPI_CLOCK_SPEED         500000
+
+// Channel-Belegung des Analog-Digital-Wandlers.
+#define DEF_CH_JOYSTICK_X_C1        0
+#define DEF_CH_JOYSTICK_Y_C1        1
+#define DEF_CH_JOYSTICK_X_C2        2
+#define DEF_CH_JOYSTICK_Y_C2        3
 
 // Anzahl Buttons pro Controller.
 #define DEF_NUM_BUTTONS             5
@@ -117,20 +133,20 @@ class Button {
 class Joystick {
     public:
         // Konstruktor und Destruktor.
-        Joystick();
+        Joystick(int channelX, int channelY);
         ~Joystick();
 
         // Public-Methoden.
         bool kalibrierung();    // Kalibriert die Joystick-Nulllage sowie die maximalen Auslenkungen.
         void getPosition(float &x, float &y);   // Ermittelt die Joystick-Lage.
-
-        // Public-Attribute.
-        Button* joystickButton;   // Button, welcher bei Hineindruecken des Joysticks aktiviert wird.
+                                                // Rueckgabewert zwischen -1.0f und 1.0f.
 
     protected:
 
     private:
-    
+        int channelX, channelY;   // Gibt die Channels des AD-Wandlers an.
+        int adcMittelX, adcMinX, adcMaxX;   // Fuer die Bestimmung des Ausschlages des Joysticks.
+        int adcMittelY, adcMinY, adcMaxY;   // Diese Werte koennen durch die Kalibrierung veraendert werden.
 }; // Klasse Joystick.
 
 
@@ -146,7 +162,9 @@ class Controller {
                         int pinButtonRot, 
                         int pinButtonGelb,
                         int pinButtonBlau,
-                        int pinButtonStart);
+                        int pinButtonStart,
+                        int channelJoystickX,
+                        int channelJoystickY);
         ~Controller();
 
         // Public-Methoden.
@@ -161,6 +179,9 @@ class Controller {
         Button* buttonGelb;
         Button* buttonBlau;
         Button* buttonStart;
+
+        // Joystick.
+        Joystick* joystick;
         
     protected:
 

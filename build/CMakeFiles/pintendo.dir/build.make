@@ -64,11 +64,11 @@ CMakeFiles/pintendo.dir/main.cpp.o: ../main.cpp
 
 CMakeFiles/pintendo.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pintendo.dir/main.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pintendo/main.cpp > CMakeFiles/pintendo.dir/main.cpp.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/pintendo.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pintendo.dir/main.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pintendo/main.cpp -o CMakeFiles/pintendo.dir/main.cpp.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/pintendo.dir/src/controller.cpp.o: CMakeFiles/pintendo.dir/flags.make
 CMakeFiles/pintendo.dir/src/controller.cpp.o: ../src/controller.cpp
@@ -77,11 +77,11 @@ CMakeFiles/pintendo.dir/src/controller.cpp.o: ../src/controller.cpp
 
 CMakeFiles/pintendo.dir/src/controller.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pintendo.dir/src/controller.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pintendo/src/controller.cpp > CMakeFiles/pintendo.dir/src/controller.cpp.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/pintendo.dir/src/controller.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pintendo.dir/src/controller.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pintendo/src/controller.cpp -o CMakeFiles/pintendo.dir/src/controller.cpp.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/pintendo.dir/src/display.cpp.o: CMakeFiles/pintendo.dir/flags.make
 CMakeFiles/pintendo.dir/src/display.cpp.o: ../src/display.cpp
@@ -90,11 +90,11 @@ CMakeFiles/pintendo.dir/src/display.cpp.o: ../src/display.cpp
 
 CMakeFiles/pintendo.dir/src/display.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pintendo.dir/src/display.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pintendo/src/display.cpp > CMakeFiles/pintendo.dir/src/display.cpp.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/pintendo.dir/src/display.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pintendo.dir/src/display.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pintendo/src/display.cpp -o CMakeFiles/pintendo.dir/src/display.cpp.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CXX_CREATE_ASSEMBLY_SOURCE
 
 # Object files for target pintendo
 pintendo_OBJECTS = \

@@ -11,11 +11,19 @@
 ../inc/display.h
 
 /home/pi/Documents/repos/pintendo/main.cpp
+stdlib.h
+-
 iostream
 -
 fstream
 -
+sys/ioctl.h
+-
+unistd.h
+-
 wiringPi.h
+-
+wiringPiSPI.h
 -
 controller.h
 /home/pi/Documents/repos/pintendo/controller.h

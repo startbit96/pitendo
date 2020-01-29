@@ -2,8 +2,10 @@
 
 #include <iostream>
 #include <wiringPi.h>
+#include <wiringPiSPI.h>
 
 using namespace std;
+
 
 // Zwei globale Objekte des Typs Controller.
 Controller* controllerP1;
@@ -104,6 +106,7 @@ bool Button::wasPressed() {
 // Mit dieser Funktion wird jeder neue Button zu Beginn initialisiert.
 void Button::defaultButtonFunktion() {
     // Mache einfach nix.
+    cout << "Haaaaeeee???" << endl;
 } // Button::defaultButtonFunktion.
 
 
@@ -113,8 +116,23 @@ void Button::defaultButtonFunktion() {
 
 
 // Konstruktor.
-Joystick::Joystick() {
-    //this->joystickButton = &Button(21);
+Joystick::Joystick(int channelX, int channelY) {
+    // Definition der AD-Wandler-Channels.
+    this->channelX = channelX;
+    this->channelY = channelY;
+
+    // Festlegung der Joystick-Einstellungen auf Standard-Werte.
+    // Hier wird eine Kalibrierung sinnvoll sein. Sinnvoll waere auch eine Abspeicherung
+    // der kalibrierten Werte, damit man dies nicht bei jedem Start durchfuehren muss.
+    // X-Werte.
+    this->adcMinX = 0;
+    this->adcMittelX = 2048;
+    this->adcMaxX = 4096;       // Es handelt sich um eine 12-Bit-Auflösung am MCP3208. 2^12 = 4096.
+    // Y-Werte.
+    this->adcMinY = 0;
+    this->adcMittelY = 2048;
+    this->adcMaxY = 4096;
+
 } // Joystick::Joystick.
 
 
@@ -132,8 +150,59 @@ bool Joystick::kalibrierung() {
 
 // Ermittelt die Joystick-Lage.
 void Joystick::getPosition(float &x, float &y) {
+    // X-Achse.
+    unsigned char data[3];
+    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
+    data[1] = this->channelX << 6;  // D1 und D0 je nach zu verwendenden Channel.
+    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
+    // Schreiben und Lesen ueber SPI.
+    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
+    // Umwandeln.
+    int adcX = ((data[1]) << 8) + data[2];
+    // Umwandeln des 12-Bit-Wertes in einen float-Wert zwischen -1.0f und 1.0f.
+    // Je nach Einbaulage des Joysticks, muss hier noch am Vorzeichen gedreht werden.
+    if (adcX < this->adcMittelX) {
+        if (adcX < this->adcMinX) {     // Neukalibrierung notwendig?
+            this->adcMinX = adcX;
+        }
+        x = -(  (float)(this->adcMittelX - adcX) / 
+                (float)(this->adcMittelX - this->adcMinX));
+    }
+    else {
+        if (adcX > this->adcMaxX) {     // Neukalibrierung notwendig?
+            this->adcMaxX = adcX;
+        }
+        x = +(  (float)(adcX - this->adcMittelX) / 
+                (float)(this->adcMaxX - this->adcMittelX));
+    }
 
+    // Y-Achse.
+    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
+    data[1] = this->channelY << 6;  // D1 und D0 je nach zu verwendenden Channel.
+    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
+    // Schreiben und Lesen ueber SPI.
+    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
+    // Umwandeln.
+    int adcY = ((data[1]) << 8) + data[2];
+    // Umwandeln des 12-Bit-Wertes in einen float-Wert zwischen -1.0f und 1.0f.
+    // Je nach Einbaulage des Joysticks, muss hier noch am Vorzeichen gedreht werden.
+    if (adcY < this->adcMittelY) {
+        if (adcY < this->adcMinY) {     // Neukalibrierung notwendig?
+            this->adcMinY = adcY;
+        }
+        y = -(  (float)(this->adcMittelY - adcY) / 
+                (float)(this->adcMittelY - this->adcMinY));
+    }
+    else {
+        if (adcY > this->adcMaxY) {     // Neukalibrierung notwendig?
+            this->adcMaxY = adcY;
+        }
+        y = +(  (float)(adcY - this->adcMittelY) / 
+                (float)(this->adcMaxY - this->adcMittelY));
+    }
 } // Joystick::getPosition.
+
+
 
 // ##############################################################################
 // #####                        KLASSE CONTROLLER                           #####
@@ -145,7 +214,9 @@ Controller::Controller( int pinButtonGruen,
                         int pinButtonRot,
                         int pinButtonBlau,
                         int pinButtonGelb,
-                        int pinButtonStart) {
+                        int pinButtonStart,
+                        int channelJoystickX,
+                        int channelJoystickY) {
     // Buttons.
     this->buttonGruen = new Button(pinButtonGruen);
     this->buttonRot = new Button(pinButtonRot);
@@ -153,12 +224,15 @@ Controller::Controller( int pinButtonGruen,
     this->buttonGelb = new Button(pinButtonGelb);
     this->buttonStart = new Button(pinButtonStart);
 
-    // Schnellzugriff.
+    // Schnellzugriff auf Buttons.
     buttonHandler[0] = buttonGruen;
     buttonHandler[1] = buttonRot;
     buttonHandler[2] = buttonBlau;
     buttonHandler[3] = buttonGelb;
     buttonHandler[4] = buttonStart;
+
+    // Joystick.
+    this->joystick = new Joystick(channelJoystickX, channelJoystickY);
 
 } // Controller::Controller.
 
@@ -235,6 +309,13 @@ bool controllerSetup() {
     // Initialisierung von wiringPi.
     if (wiringPiSetup() < 0) {
         cerr << "WiringPi konnte nicht initialisiert werden!" << endl;
+        return false;
+    }
+
+    // Initialisierung der SPI-Schnittstelle.
+    if (wiringPiSPISetup(DEF_SPI_CHANNEL, DEF_SPI_CLOCK_SPEED) < 0) {
+        cerr << "WiringPiSPI konnte nicht initialisiert werden!" << endl;
+        return false;
     }
     
     // Erzeugung der beiden Controller.
@@ -242,12 +323,18 @@ bool controllerSetup() {
                                     DEF_PIN_BTN_ROT_C1,
                                     DEF_PIN_BTN_BLAU_C1,
                                     DEF_PIN_BTN_GELB_C1,
-                                    DEF_PIN_BTN_START_C1);
+                                    DEF_PIN_BTN_START_C1,
+                                    DEF_CH_JOYSTICK_X_C1,
+                                    DEF_CH_JOYSTICK_Y_C1);
     controllerP2 = new Controller(  DEF_PIN_BTN_GRUEN_C2,
                                     DEF_PIN_BTN_ROT_C2,
                                     DEF_PIN_BTN_BLAU_C2,
                                     DEF_PIN_BTN_GELB_C2,
-                                    DEF_PIN_BTN_START_C2);
+                                    DEF_PIN_BTN_START_C2,
+                                    DEF_CH_JOYSTICK_X_C2,
+                                    DEF_CH_JOYSTICK_Y_C2);
+
+    
 
     return true;
 }

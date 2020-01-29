@@ -8,7 +8,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pi/Documents/repos/pintendo/src/controller.cpp" "/home/pi/Documents/repos/pintendo/build/CMakeFiles/pintendo.dir/src/controller.cpp.o"
   "/home/pi/Documents/repos/pintendo/src/display.cpp" "/home/pi/Documents/repos/pintendo/build/CMakeFiles/pintendo.dir/src/display.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
