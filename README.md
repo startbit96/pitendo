@@ -1,4 +1,4 @@
-# pintendo
+# pitendo
 Gaming on Raspberry Pi in C++.
 
 # To Do:

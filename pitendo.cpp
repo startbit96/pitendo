@@ -3,10 +3,7 @@
 #include <fstream>
 #include <sys/ioctl.h>
 #include <unistd.h>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
-#include "controller.h"
-#include "display.h"
+#include "pitendo_game_engine.h"
 
 
 using namespace std;
@@ -50,6 +47,9 @@ void changeFontSize() {
 int main(int argc, char** argv) {
     int i = 0;
 
+    // Registrierung von Spielen.
+    // Hier werden Spiele in das Hauptmenue mit aufgenommen.
+
     // Bildschirm initialisieren.
     if (argc == 1) {
         // Dies ist der Aufruf durch den Nutzer.
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
         }
 
         // Neues Terminal oeffnen und pintendo ausfuehren.
-        system("xterm -fa \"square:size=8:antialias=true\" -fullscreen -e \"./build/pintendo start\"");
+        system("xterm -fa \"square:size=6:antialias=true\" -fullscreen -e \"./build/pintendo start\"");
         return 1;
     }
     else {
@@ -114,12 +114,14 @@ int main(int argc, char** argv) {
     controllerP2->buttonBlau->buttonFunktion = &moveLeft;
     controllerP2->buttonGelb->buttonFunktion = &moveRight;
     controllerP2->buttonStart->buttonFunktion = &writeToTerminal;
-    controllerP1->buttonStart->buttonFunktion = &changeFontSize;
+    controllerP1->buttonStart->buttonFunktion = &writeToTerminal;
 
     float x, y;
 
     // Dauerschleife.
     while(true) {
+        if (controllerP1->buttonBlau->isPressed() == true)
+            cout << "a";
         controllerP1->execute();
         controllerP2->execute();
         controllerP1->joystick->getPosition(x, y);

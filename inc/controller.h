@@ -2,7 +2,7 @@
 ################################ CONTROLLER.H #################################
 Tim Schwarzbrunn
 
-Die Klasse controller.h stellt fuer das Projekt "pintendo" die notwendige 
+Die Datei controller.h stellt fuer das Projekt "pitendo" die notwendige 
 Verknuepfung des Controllers mit den GPIO-Pins her.
 
 Hierfuer wird die Bibliothek "wiringPi" (http://wiringpi.com/) verwendet.
@@ -46,6 +46,10 @@ Nummerierung GPIO-Pins (Stand Januar 2020, Raspberry Pi 3 Model B):
 
 Aenderungshistorie:
 21.01.2020: Aufbau und Implementierung Button-Klasse und -Funktionalitaet.
+02.02.2020: Fertige Implementierung der Controller inkl. Buttons und Joysticks.
+            Integration der Ueberpruefung, ob Controller verbunden ist.
+            Anpassung der Pin-Belegung auf fertig-gelötete Bauteile.
+            (Jetzt nichts mehr an der Pin-Belegung aendern.)
 
 
 ###############################################################################
@@ -54,36 +58,37 @@ Aenderungshistorie:
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
+
+// Anzahl Buttons pro Controller.
+#define DEF_NUM_BUTTONS             6
+
 // Pin-Belegung der Buttons.
-#define DEF_PIN_BTN_GRUEN_C1        0
-#define DEF_PIN_BTN_ROT_C1          2
-#define DEF_PIN_BTN_BLAU_C1         3
-#define DEF_PIN_BTN_GELB_C1         21
-#define DEF_PIN_BTN_START_C1        22
-#define DEF_PIN_BTN_JOYSTICK_C1     24
-#define DEF_PIN_BTN_GRUEN_C2        26
-#define DEF_PIN_BTN_ROT_C2          6
-#define DEF_PIN_BTN_BLAU_C2         5
-#define DEF_PIN_BTN_GELB_C2         4
-#define DEF_PIN_BTN_START_C2        1
-#define DEF_PIN_BTN_JOYSTICK_C2     28
+#define DEF_PIN_BTN_GRUEN_C1        27
+#define DEF_PIN_BTN_ROT_C1          24
+#define DEF_PIN_BTN_BLAU_C1         26
+#define DEF_PIN_BTN_GELB_C1         25
+#define DEF_PIN_BTN_START_C1        29
+#define DEF_PIN_BTN_JOYSTICK_C1     28
+#define DEF_PIN_BTN_GRUEN_C2        4
+#define DEF_PIN_BTN_ROT_C2          2
+#define DEF_PIN_BTN_BLAU_C2         1
+#define DEF_PIN_BTN_GELB_C2         3
+#define DEF_PIN_BTN_START_C2        6
+#define DEF_PIN_BTN_JOYSTICK_C2     5
 
 // Pin-Belegung der Controller-Erkennung.
-#define DEF_PIN_CHECK_C1            25
-#define DEF_PIN_CHECK_C2            29
+#define DEF_PIN_CHECK_C1            23
+#define DEF_PIN_CHECK_C2            0
 
 // Definition SPI-Schnittstelle.
 #define DEF_SPI_CHANNEL             0
 #define DEF_SPI_CLOCK_SPEED         500000
 
 // Channel-Belegung des Analog-Digital-Wandlers.
-#define DEF_CH_JOYSTICK_X_C1        0
-#define DEF_CH_JOYSTICK_Y_C1        1
-#define DEF_CH_JOYSTICK_X_C2        2
-#define DEF_CH_JOYSTICK_Y_C2        3
-
-// Anzahl Buttons pro Controller.
-#define DEF_NUM_BUTTONS             5
+#define DEF_CH_JOYSTICK_X_C1        1
+#define DEF_CH_JOYSTICK_Y_C1        0
+#define DEF_CH_JOYSTICK_X_C2        3
+#define DEF_CH_JOYSTICK_Y_C2        2
 
 
 
@@ -163,14 +168,17 @@ class Controller {
                         int pinButtonGelb,
                         int pinButtonBlau,
                         int pinButtonStart,
+                        int pinButtonJoystick,
                         int channelJoystickX,
-                        int channelJoystickY);
+                        int channelJoystickY,
+                        int pinCheck);
         ~Controller();
 
         // Public-Methoden.
         void refresh();     // Setzt die Werte aller Buttons zurueck.
         void execute();     // Fuehrt die Funktionen aller Buttons aus, sollten
                             // sie gedrueckt wurden sein.
+        bool isConnected(); // Ueberprueft, ob Controller angeschlossen ist.
 
         // Public-Attribute.
         // Buttons.
@@ -179,6 +187,7 @@ class Controller {
         Button* buttonGelb;
         Button* buttonBlau;
         Button* buttonStart;
+        Button* buttonJoystick;
 
         // Joystick.
         Joystick* joystick;
@@ -188,6 +197,9 @@ class Controller {
     private:
         // Fuer den schnelleren Zugriff.
         Button* buttonHandler[DEF_NUM_BUTTONS];
+
+        // Pin-Nummer der Anschluss-Ueberpruefung.
+        int pinCheck;
 
 }; // Klasse Controller.
 
@@ -208,12 +220,14 @@ void interruptButtonRotC1(void);
 void interruptButtonBlauC1(void);
 void interruptButtonGelbC1(void);
 void interruptButtonStartC1(void);
+void interruptButtonJoystickC1(void);
 // Controller 2.
 void interruptButtonGruenC2(void);
 void interruptButtonRotC2(void);
 void interruptButtonBlauC2(void);
 void interruptButtonGelbC2(void);
 void interruptButtonStartC2(void);
+void interruptButtonJoystickC2(void);
 
 // Initialisiert die beiden Controller und deren Funktionalitaeten.
 bool controllerSetup();

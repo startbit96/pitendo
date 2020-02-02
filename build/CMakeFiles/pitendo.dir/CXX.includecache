@@ -10,7 +10,9 @@
 
 ../inc/display.h
 
-/home/pi/Documents/repos/pintendo/main.cpp
+../inc/pitendo_game_engine.h
+
+/home/pi/Documents/repos/pintendo/pitendo.cpp
 stdlib.h
 -
 iostream
@@ -30,13 +32,15 @@ controller.h
 display.h
 /home/pi/Documents/repos/pintendo/display.h
 
-/home/pi/Documents/repos/pintendo/src/controller.cpp
+/home/pi/Documents/repos/pintendo/src/display.cpp
+display.h
+/home/pi/Documents/repos/pintendo/src/display.h
+
+/home/pi/Documents/repos/pintendo/src/pitendo_game_engine.cpp
+pitendo_game_engine.h
+/home/pi/Documents/repos/pintendo/src/pitendo_game_engine.h
 controller.h
 /home/pi/Documents/repos/pintendo/src/controller.h
-iostream
--
-wiringPi.h
--
-wiringPiSPI.h
--
+display.h
+/home/pi/Documents/repos/pintendo/src/display.h
 

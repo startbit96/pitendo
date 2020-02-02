@@ -122,7 +122,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=pintendo
+CMAKE_PROJECT_NAME:STATIC=pitendo
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -188,6 +188,12 @@ pintendo_BINARY_DIR:STATIC=/home/pi/Documents/repos/pintendo/build
 
 //Value Computed by CMake
 pintendo_SOURCE_DIR:STATIC=/home/pi/Documents/repos/pintendo
+
+//Value Computed by CMake
+pitendo_BINARY_DIR:STATIC=/home/pi/Documents/repos/pintendo/build
+
+//Value Computed by CMake
+pitendo_SOURCE_DIR:STATIC=/home/pi/Documents/repos/pintendo
 
 
 ########################

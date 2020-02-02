@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named pintendo
+# Target rules for targets named pitendo
 
 # Build rule for target.
-pintendo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pintendo
-.PHONY : pintendo
+pitendo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pitendo
+.PHONY : pitendo
 
 # fast build rule for target.
-pintendo/fast:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/build
-.PHONY : pintendo/fast
+pitendo/fast:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/build
+.PHONY : pitendo/fast
 
-main.o: main.cpp.o
+pitendo.o: pitendo.cpp.o
 
-.PHONY : main.o
+.PHONY : pitendo.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/main.cpp.o
-.PHONY : main.cpp.o
+pitendo.cpp.o:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/pitendo.cpp.o
+.PHONY : pitendo.cpp.o
 
-main.i: main.cpp.i
+pitendo.i: pitendo.cpp.i
 
-.PHONY : main.i
+.PHONY : pitendo.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/main.cpp.i
-.PHONY : main.cpp.i
+pitendo.cpp.i:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/pitendo.cpp.i
+.PHONY : pitendo.cpp.i
 
-main.s: main.cpp.s
+pitendo.s: pitendo.cpp.s
 
-.PHONY : main.s
+.PHONY : pitendo.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/main.cpp.s
-.PHONY : main.cpp.s
+pitendo.cpp.s:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/pitendo.cpp.s
+.PHONY : pitendo.cpp.s
 
 src/controller.o: src/controller.cpp.o
 
@@ -156,7 +156,7 @@ src/controller.o: src/controller.cpp.o
 
 # target to build an object file
 src/controller.cpp.o:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/controller.cpp.o
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/controller.cpp.o
 .PHONY : src/controller.cpp.o
 
 src/controller.i: src/controller.cpp.i
@@ -165,7 +165,7 @@ src/controller.i: src/controller.cpp.i
 
 # target to preprocess a source file
 src/controller.cpp.i:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/controller.cpp.i
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/controller.cpp.i
 .PHONY : src/controller.cpp.i
 
 src/controller.s: src/controller.cpp.s
@@ -174,7 +174,7 @@ src/controller.s: src/controller.cpp.s
 
 # target to generate assembly for a file
 src/controller.cpp.s:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/controller.cpp.s
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/controller.cpp.s
 .PHONY : src/controller.cpp.s
 
 src/display.o: src/display.cpp.o
@@ -183,7 +183,7 @@ src/display.o: src/display.cpp.o
 
 # target to build an object file
 src/display.cpp.o:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/display.cpp.o
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/display.cpp.o
 .PHONY : src/display.cpp.o
 
 src/display.i: src/display.cpp.i
@@ -192,7 +192,7 @@ src/display.i: src/display.cpp.i
 
 # target to preprocess a source file
 src/display.cpp.i:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/display.cpp.i
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/display.cpp.i
 .PHONY : src/display.cpp.i
 
 src/display.s: src/display.cpp.s
@@ -201,8 +201,35 @@ src/display.s: src/display.cpp.s
 
 # target to generate assembly for a file
 src/display.cpp.s:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/src/display.cpp.s
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/display.cpp.s
 .PHONY : src/display.cpp.s
+
+src/pitendo_game_engine.o: src/pitendo_game_engine.cpp.o
+
+.PHONY : src/pitendo_game_engine.o
+
+# target to build an object file
+src/pitendo_game_engine.cpp.o:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o
+.PHONY : src/pitendo_game_engine.cpp.o
+
+src/pitendo_game_engine.i: src/pitendo_game_engine.cpp.i
+
+.PHONY : src/pitendo_game_engine.i
+
+# target to preprocess a source file
+src/pitendo_game_engine.cpp.i:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.i
+.PHONY : src/pitendo_game_engine.cpp.i
+
+src/pitendo_game_engine.s: src/pitendo_game_engine.cpp.s
+
+.PHONY : src/pitendo_game_engine.s
+
+# target to generate assembly for a file
+src/pitendo_game_engine.cpp.s:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.s
+.PHONY : src/pitendo_game_engine.cpp.s
 
 # Help Target
 help:
@@ -211,17 +238,20 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... pintendo"
+	@echo "... pitendo"
 	@echo "... edit_cache"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... pitendo.o"
+	@echo "... pitendo.i"
+	@echo "... pitendo.s"
 	@echo "... src/controller.o"
 	@echo "... src/controller.i"
 	@echo "... src/controller.s"
 	@echo "... src/display.o"
 	@echo "... src/display.i"
 	@echo "... src/display.s"
+	@echo "... src/pitendo_game_engine.o"
+	@echo "... src/pitendo_game_engine.i"
+	@echo "... src/pitendo_game_engine.s"
 .PHONY : help
 
 

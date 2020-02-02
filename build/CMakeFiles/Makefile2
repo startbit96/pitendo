@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/pi/Documents/repos/pintendo
 CMAKE_BINARY_DIR = /home/pi/Documents/repos/pintendo/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/pintendo.dir
+# Target rules for target CMakeFiles/pitendo.dir
 
 # All Build rule for target.
-CMakeFiles/pintendo.dir/all:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/depend
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pi/Documents/repos/pintendo/build/CMakeFiles --progress-num=1,2,3,4 "Built target pintendo"
-.PHONY : CMakeFiles/pintendo.dir/all
+CMakeFiles/pitendo.dir/all:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/depend
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pi/Documents/repos/pintendo/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target pitendo"
+.PHONY : CMakeFiles/pitendo.dir/all
 
 # Include target in all.
-all: CMakeFiles/pintendo.dir/all
+all: CMakeFiles/pitendo.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/pintendo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Documents/repos/pintendo/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pintendo.dir/all
+CMakeFiles/pitendo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Documents/repos/pintendo/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pitendo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Documents/repos/pintendo/build/CMakeFiles 0
-.PHONY : CMakeFiles/pintendo.dir/rule
+.PHONY : CMakeFiles/pitendo.dir/rule
 
 # Convenience name for target.
-pintendo: CMakeFiles/pintendo.dir/rule
+pitendo: CMakeFiles/pitendo.dir/rule
 
-.PHONY : pintendo
-
-# clean rule for target.
-CMakeFiles/pintendo.dir/clean:
-	$(MAKE) -f CMakeFiles/pintendo.dir/build.make CMakeFiles/pintendo.dir/clean
-.PHONY : CMakeFiles/pintendo.dir/clean
+.PHONY : pitendo
 
 # clean rule for target.
-clean: CMakeFiles/pintendo.dir/clean
+CMakeFiles/pitendo.dir/clean:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/clean
+.PHONY : CMakeFiles/pitendo.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/pitendo.dir/clean
 
 .PHONY : clean
 

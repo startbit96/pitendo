@@ -39,6 +39,9 @@ Button::Button(int pinNummer) {
         case DEF_PIN_BTN_START_C1:
             wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonStartC1);
             break;
+        case DEF_PIN_BTN_JOYSTICK_C1:
+            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonJoystickC1);
+            break;
         case DEF_PIN_BTN_GRUEN_C2:
             wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGruenC2);
             break;
@@ -53,6 +56,9 @@ Button::Button(int pinNummer) {
             break;
         case DEF_PIN_BTN_START_C2:
             wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonStartC2);
+            break;
+        case DEF_PIN_BTN_JOYSTICK_C2:
+            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonJoystickC2);
             break;
         default:
             cerr << "Undefinierte pinNummer! Button::Button." << endl;
@@ -82,7 +88,7 @@ void Button::refresh() {
 // Umsetzung mittels Abfrage des GPIO-Pins.
 bool Button::isPressed() {
     int digitalWert = digitalRead(this->pinNummer);
-    if (digitalWert == 1) {
+    if (digitalWert == 0) {     // Pull-Up-Widerstand.
         // Button gedrueckt.
         return true;
     }
@@ -106,7 +112,6 @@ bool Button::wasPressed() {
 // Mit dieser Funktion wird jeder neue Button zu Beginn initialisiert.
 void Button::defaultButtonFunktion() {
     // Mache einfach nix.
-    cout << "Haaaaeeee???" << endl;
 } // Button::defaultButtonFunktion.
 
 
@@ -150,6 +155,11 @@ bool Joystick::kalibrierung() {
 
 // Ermittelt die Joystick-Lage.
 void Joystick::getPosition(float &x, float &y) {
+    // Versuche haben gezeigt, dass die Sensibilitaet des Joysticks von seiner Position
+    // abhaengt. Bewegt man den Joystick nahe des Zentrums, sind kaum Aenderungen erkennbar.
+    // Die Werte aendern sich im Randbereich rapide. Eine Linearisierung waere durch eine 
+    // entsprechende Versuchsreihe denkbar, wird jedoch noch nicht umgesetzt und die Notwendigkeit
+    // abgewartet.
     // X-Achse.
     unsigned char data[3];
     data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
@@ -165,14 +175,14 @@ void Joystick::getPosition(float &x, float &y) {
         if (adcX < this->adcMinX) {     // Neukalibrierung notwendig?
             this->adcMinX = adcX;
         }
-        x = -(  (float)(this->adcMittelX - adcX) / 
+        x = +(  (float)(this->adcMittelX - adcX) / 
                 (float)(this->adcMittelX - this->adcMinX));
     }
     else {
         if (adcX > this->adcMaxX) {     // Neukalibrierung notwendig?
             this->adcMaxX = adcX;
         }
-        x = +(  (float)(adcX - this->adcMittelX) / 
+        x = -(  (float)(adcX - this->adcMittelX) / 
                 (float)(this->adcMaxX - this->adcMittelX));
     }
 
@@ -215,14 +225,17 @@ Controller::Controller( int pinButtonGruen,
                         int pinButtonBlau,
                         int pinButtonGelb,
                         int pinButtonStart,
+                        int pinButtonJoystick,
                         int channelJoystickX,
-                        int channelJoystickY) {
+                        int channelJoystickY,
+                        int pinCheck) {
     // Buttons.
     this->buttonGruen = new Button(pinButtonGruen);
     this->buttonRot = new Button(pinButtonRot);
     this->buttonBlau = new Button(pinButtonBlau);
     this->buttonGelb = new Button(pinButtonGelb);
     this->buttonStart = new Button(pinButtonStart);
+    this->buttonJoystick = new Button(pinButtonJoystick);
 
     // Schnellzugriff auf Buttons.
     buttonHandler[0] = buttonGruen;
@@ -230,9 +243,16 @@ Controller::Controller( int pinButtonGruen,
     buttonHandler[2] = buttonBlau;
     buttonHandler[3] = buttonGelb;
     buttonHandler[4] = buttonStart;
+    buttonHandler[5] = buttonJoystick;
 
     // Joystick.
     this->joystick = new Joystick(channelJoystickX, channelJoystickY);
+
+    // Der Pin "pinCheck" ist auf dem Controller mit Masse kurzgeschlossen.
+    // Dadurch wird ein Ein- und Ausstecken des Controllers erkannt.
+    // WiringPi-Pin-Mode auf INPUT fuer Check-Pin setzen.
+    this->pinCheck = pinCheck;
+    pinMode (this->pinCheck, INPUT);
 
 } // Controller::Controller.
 
@@ -263,6 +283,20 @@ void Controller::execute() {
 } // Controller::execute.
 
 
+// Ueberprueft, ob Controller angeschlossen ist.
+bool Controller::isConnected() {
+    int digitalWert = digitalRead(this->pinCheck);
+    if (digitalWert == 0) {     // Pull-Up-Widerstand.
+        // Controller angeschlossen.
+        return true;
+    }
+    else {
+        // Controller nicht angeschlossen.
+        return false;
+    }
+} // Controller:isConnected.
+
+
 // ##############################################################################
 // #####                        ALLGEMEIN                                   #####
 // ##############################################################################
@@ -285,6 +319,9 @@ void interruptButtonGelbC1(void) {
 void interruptButtonStartC1(void) {
     controllerP1->buttonStart->bPressed = true;
 }
+void interruptButtonJoystickC1(void) {
+    controllerP1->buttonJoystick->bPressed = true;
+}
 
 // Controller 2.
 void interruptButtonGruenC2(void) {
@@ -301,6 +338,9 @@ void interruptButtonGelbC2(void) {
 }
 void interruptButtonStartC2(void) {
     controllerP2->buttonStart->bPressed = true;
+}
+void interruptButtonJoystickC2(void) {
+    controllerP2->buttonJoystick->bPressed = true;
 }
 
 
@@ -324,17 +364,31 @@ bool controllerSetup() {
                                     DEF_PIN_BTN_BLAU_C1,
                                     DEF_PIN_BTN_GELB_C1,
                                     DEF_PIN_BTN_START_C1,
+                                    DEF_PIN_BTN_JOYSTICK_C1,
                                     DEF_CH_JOYSTICK_X_C1,
-                                    DEF_CH_JOYSTICK_Y_C1);
+                                    DEF_CH_JOYSTICK_Y_C1,
+                                    DEF_PIN_CHECK_C1);
     controllerP2 = new Controller(  DEF_PIN_BTN_GRUEN_C2,
                                     DEF_PIN_BTN_ROT_C2,
                                     DEF_PIN_BTN_BLAU_C2,
                                     DEF_PIN_BTN_GELB_C2,
                                     DEF_PIN_BTN_START_C2,
+                                    DEF_PIN_BTN_JOYSTICK_C2,
                                     DEF_CH_JOYSTICK_X_C2,
-                                    DEF_CH_JOYSTICK_Y_C2);
+                                    DEF_CH_JOYSTICK_Y_C2,
+                                    DEF_PIN_CHECK_C2);
 
-    
+    // Ueberpruefe, ob beide Controller angeschlossen sind.
+    // Controller 1.
+    if (controllerP1->isConnected() == true)
+        cout << "Controller #1 ist verbunden." << endl;
+    else
+        cout << "Controller #1 ist nicht verbunden!" << endl;
+    // Controller 2.
+    if (controllerP2->isConnected() == true)
+        cout << "Controller #2 ist verbunden." << endl;
+    else
+        cout << "Controller #2 ist nicht verbunden!" << endl;
 
     return true;
 }
