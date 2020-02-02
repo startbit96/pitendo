@@ -13,18 +13,37 @@ Grundlage fuer viele Operationen sind Escape-Sequenzen.
 ###############################################################################
 */
 
+
 #include <string.h>
 
-
-bool setupDisplay();
+//bool setupDisplay();
 void moveCursorUp(int numberOfSteps = 1);
 void moveCursorDown(int numberOfSteps = 1);
 void moveCursorLeft(int numberOfSteps = 1);
 void moveCursorRight(int numberOfSteps = 1);
+
+void clearScreen();
+
+void moveUp();
+void moveDown();
+void moveLeft();
+void moveRight();
+
+/*
 void setCursorPosition(int x, int y);
 void getCursorPosition(int &x, int &y);
 void getCursorLimits(int &x, int &y);
-void clearScreen();
+
+
+class Cursor {
+    public:
+        Cursor();       // Konstruktor.
+        ~Cursor();      // Destruktor.
+    protected:
+
+    private:
+        int x, y;
+}
 
 class Display {
     public:
@@ -40,8 +59,8 @@ class Menue {
         void addMenueEntry();
         void deleteMenueEntry();
         void execute();
-        void moveUp;
-        void moveDown;
+        void moveUp();
+        void moveDown();
 
     protected:
 
@@ -60,7 +79,7 @@ class MenueEintrag {
 
 }
 
-
+*/
 
 
 #endif /*!_DISPLAY_H_*/

@@ -1,22 +1,22 @@
 [
 {
-  "directory": "/home/pi/Documents/repos/pintendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pintendo/inc    -o CMakeFiles/pitendo.dir/pitendo.cpp.o -c /home/pi/Documents/repos/pintendo/pitendo.cpp",
-  "file": "/home/pi/Documents/repos/pintendo/pitendo.cpp"
+  "directory": "/home/pi/Documents/repos/pitendo/build",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc  -g   -o CMakeFiles/pitendo.dir/pitendo.cpp.o -c /home/pi/Documents/repos/pitendo/pitendo.cpp",
+  "file": "/home/pi/Documents/repos/pitendo/pitendo.cpp"
 },
 {
-  "directory": "/home/pi/Documents/repos/pintendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pintendo/inc    -o CMakeFiles/pitendo.dir/src/controller.cpp.o -c /home/pi/Documents/repos/pintendo/src/controller.cpp",
-  "file": "/home/pi/Documents/repos/pintendo/src/controller.cpp"
+  "directory": "/home/pi/Documents/repos/pitendo/build",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc  -g   -o CMakeFiles/pitendo.dir/src/controller.cpp.o -c /home/pi/Documents/repos/pitendo/src/controller.cpp",
+  "file": "/home/pi/Documents/repos/pitendo/src/controller.cpp"
 },
 {
-  "directory": "/home/pi/Documents/repos/pintendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pintendo/inc    -o CMakeFiles/pitendo.dir/src/display.cpp.o -c /home/pi/Documents/repos/pintendo/src/display.cpp",
-  "file": "/home/pi/Documents/repos/pintendo/src/display.cpp"
+  "directory": "/home/pi/Documents/repos/pitendo/build",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc  -g   -o CMakeFiles/pitendo.dir/src/display.cpp.o -c /home/pi/Documents/repos/pitendo/src/display.cpp",
+  "file": "/home/pi/Documents/repos/pitendo/src/display.cpp"
 },
 {
-  "directory": "/home/pi/Documents/repos/pintendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pintendo/inc    -o CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pintendo/src/pitendo_game_engine.cpp",
-  "file": "/home/pi/Documents/repos/pintendo/src/pitendo_game_engine.cpp"
+  "directory": "/home/pi/Documents/repos/pitendo/build",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc  -g   -o CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp",
+  "file": "/home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp"
 }
 ]

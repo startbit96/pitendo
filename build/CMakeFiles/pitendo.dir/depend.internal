@@ -4,15 +4,16 @@
 CMakeFiles/pitendo.dir/pitendo.cpp.o
  ../inc/controller.h
  ../inc/display.h
- /home/pi/Documents/repos/pintendo/pitendo.cpp
+ ../inc/pitendo_game_engine.h
+ /home/pi/Documents/repos/pitendo/pitendo.cpp
 CMakeFiles/pitendo.dir/src/controller.cpp.o
  ../inc/controller.h
- /home/pi/Documents/repos/pintendo/src/controller.cpp
+ /home/pi/Documents/repos/pitendo/src/controller.cpp
 CMakeFiles/pitendo.dir/src/display.cpp.o
  ../inc/display.h
- /home/pi/Documents/repos/pintendo/src/display.cpp
+ /home/pi/Documents/repos/pitendo/src/display.cpp
 CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o
  ../inc/controller.h
  ../inc/display.h
  ../inc/pitendo_game_engine.h
- /home/pi/Documents/repos/pintendo/src/pitendo_game_engine.cpp
+ /home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp

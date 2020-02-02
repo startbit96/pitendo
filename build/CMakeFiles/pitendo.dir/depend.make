@@ -3,6 +3,7 @@
 
 CMakeFiles/pitendo.dir/pitendo.cpp.o: ../inc/controller.h
 CMakeFiles/pitendo.dir/pitendo.cpp.o: ../inc/display.h
+CMakeFiles/pitendo.dir/pitendo.cpp.o: ../inc/pitendo_game_engine.h
 CMakeFiles/pitendo.dir/pitendo.cpp.o: ../pitendo.cpp
 
 CMakeFiles/pitendo.dir/src/controller.cpp.o: ../inc/controller.h

@@ -145,13 +145,21 @@ class Joystick {
         bool kalibrierung();    // Kalibriert die Joystick-Nulllage sowie die maximalen Auslenkungen.
         void getPosition(float &x, float &y);   // Ermittelt die Joystick-Lage.
                                                 // Rueckgabewert zwischen -1.0f und 1.0f.
-
+        // Die Funktion "getMovement" bietet die Moeglichkeit, den Cursor fuer Auswahl-Bewegungen
+        // zu nutzen (z.B. im Hauptmenue.). Durch die regelmaessige Abfrage, wuerde der Cursor 
+        // mehrere Zeilen springen, obwohl man nur eine Zeile springen moechte. Daher ist eine
+        // Abfrage-Logik zu implementieren.
+        // Die Funktion muss bei Benutzung regelmaessig abgefragt werden, da sie auch die Leerlauf-
+        // zaehler aktualisiert!
+        void getMovement(bool &up, bool &down, bool &left, bool &right);
     protected:
 
     private:
         int channelX, channelY;   // Gibt die Channels des AD-Wandlers an.
         int adcMittelX, adcMinX, adcMaxX;   // Fuer die Bestimmung des Ausschlages des Joysticks.
         int adcMittelY, adcMinY, adcMaxY;   // Diese Werte koennen durch die Kalibrierung veraendert werden.
+        const int nLengthIdle = 10;         // Fuer Funktion "getMovement" --> Wartezyklen bei Wiederabfrage.
+        int idleUp, idleDown, idleLeft, idleRight;
 }; // Klasse Joystick.
 
 

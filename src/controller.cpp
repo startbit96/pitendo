@@ -138,6 +138,11 @@ Joystick::Joystick(int channelX, int channelY) {
     this->adcMittelY = 2048;
     this->adcMaxY = 4096;
 
+    // Leerlauf-Zeiten fuer Cursor-Bewegungs-Abfrage.
+    this->idleUp = 0; 
+    this->idleDown = 0;
+    this->idleLeft = 0;
+    this->idleRight = 0;
 } // Joystick::Joystick.
 
 
@@ -211,6 +216,105 @@ void Joystick::getPosition(float &x, float &y) {
                 (float)(this->adcMaxY - this->adcMittelY));
     }
 } // Joystick::getPosition.
+
+
+// Die Funktion "getMovement" bietet die Moeglichkeit, den Cursor fuer Auswahl-Bewegungen
+// zu nutzen (z.B. im Hauptmenue.). Durch die regelmaessige Abfrage, wuerde der Cursor 
+// mehrere Zeilen springen, obwohl man nur eine Zeile springen moechte. Daher ist eine
+// Abfrage-Logik zu implementieren.
+// Die Funktion muss bei Benutzung regelmaessig abgefragt werden, da sie auch die Leerlauf-
+// zaehler aktualisiert!
+void Joystick::getMovement(bool &up, bool &down, bool &left, bool &right) {
+    // Variablen-Definition.
+    const float joystickThreshold = 0.8;
+
+    // Abfrage der aktuellen Joystick-Position.
+    float x, y;
+    this->getPosition(x, y);
+
+    // Jeweilige Abfrage der Positionen.
+    // Nach oben.
+    if (y > joystickThreshold) {
+        if (this->idleUp == 0) {
+            // Wert darf angenommen werden.
+            up = true;
+            this->idleUp = this->nLengthIdle;
+        }
+        else {
+            up = false;
+            this->idleUp--;
+        }
+    }
+    else {
+        // Leerlaufzaehler zuruecksetzen, da Position verlassen wurde.
+        up = false;
+        this->idleUp = 0;
+        // Kann bei Schwankung um den Threshold-Wert zu ungewollten Ausloesern fuehren.
+        // Muss beobachtet werden.
+    }
+
+    // Nach unten.
+    if (y < ((-1.0f) * joystickThreshold)) {
+        if (this->idleDown == 0) {
+            // Wert darf angenommen werden.
+            down = true;
+            this->idleDown = this->nLengthIdle;
+        }
+        else {
+            down = false;
+            this->idleDown--;
+        }
+    }
+    else {
+        // Leerlaufzaehler zuruecksetzen, da Position verlassen wurde.
+        down = false;
+        this->idleDown = 0;
+        // Kann bei Schwankung um den Threshold-Wert zu ungewollten Ausloesern fuehren.
+        // Muss beobachtet werden.
+    }
+
+    // Nach links.
+    if (x < ((-1.0f) * joystickThreshold)) {
+        if (this->idleLeft == 0) {
+            // Wert darf angenommen werden.
+            left = true;
+            this->idleLeft = this->nLengthIdle;
+        }
+        else {
+            left = false;
+            this->idleLeft--;
+        }
+    }
+    else {
+        // Leerlaufzaehler zuruecksetzen, da Position verlassen wurde.
+        left = false;
+        this->idleLeft = 0;
+        // Kann bei Schwankung um den Threshold-Wert zu ungewollten Ausloesern fuehren.
+        // Muss beobachtet werden.
+    }
+
+    // Nach rechts.
+    if (x > joystickThreshold) {
+        if (this->idleRight == 0) {
+            // Wert darf angenommen werden.
+            right = true;
+            this->idleRight = this->nLengthIdle;
+        }
+        else {
+            right = false;
+            this->idleRight--;
+        }
+    }
+    else {
+        // Leerlaufzaehler zuruecksetzen, da Position verlassen wurde.
+        right = false;
+        this->idleRight = 0;
+        // Kann bei Schwankung um den Threshold-Wert zu ungewollten Ausloesern fuehren.
+        // Muss beobachtet werden.
+    }
+
+} // Joystick::getMovement.
+
 
 
 
