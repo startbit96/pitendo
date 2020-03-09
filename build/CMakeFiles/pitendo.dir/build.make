@@ -70,62 +70,77 @@ CMakeFiles/pitendo.dir/pitendo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/pitendo.cpp.s"
 	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/pitendo.cpp -o CMakeFiles/pitendo.dir/pitendo.cpp.s
 
-CMakeFiles/pitendo.dir/src/controller.cpp.o: CMakeFiles/pitendo.dir/flags.make
-CMakeFiles/pitendo.dir/src/controller.cpp.o: ../src/controller.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/pitendo.dir/src/controller.cpp.o"
-	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/controller.cpp.o -c /home/pi/Documents/repos/pitendo/src/controller.cpp
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o: CMakeFiles/pitendo.dir/flags.make
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o: ../src/pitendoGameEngine/controller.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o"
+	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp
 
-CMakeFiles/pitendo.dir/src/controller.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/controller.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/controller.cpp > CMakeFiles/pitendo.dir/src/controller.cpp.i
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.i"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp > CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.i
 
-CMakeFiles/pitendo.dir/src/controller.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/controller.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/controller.cpp -o CMakeFiles/pitendo.dir/src/controller.cpp.s
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.s"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.s
 
-CMakeFiles/pitendo.dir/src/display.cpp.o: CMakeFiles/pitendo.dir/flags.make
-CMakeFiles/pitendo.dir/src/display.cpp.o: ../src/display.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/pitendo.dir/src/display.cpp.o"
-	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/display.cpp.o -c /home/pi/Documents/repos/pitendo/src/display.cpp
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o: CMakeFiles/pitendo.dir/flags.make
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o: ../src/pitendoGameEngine/display.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o"
+	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp
 
-CMakeFiles/pitendo.dir/src/display.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/display.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/display.cpp > CMakeFiles/pitendo.dir/src/display.cpp.i
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.i"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp > CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.i
 
-CMakeFiles/pitendo.dir/src/display.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/display.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/display.cpp -o CMakeFiles/pitendo.dir/src/display.cpp.s
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.s"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.s
 
-CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o: CMakeFiles/pitendo.dir/flags.make
-CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o: ../src/pitendo_game_engine.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o"
-	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o: CMakeFiles/pitendo.dir/flags.make
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o: ../src/pitendoGameEngine/pitendo_game_engine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o"
+	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp
 
-CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.i"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp > CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.i
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.i"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp > CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.i
 
-CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.s"
-	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/pitendo_game_engine.cpp -o CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.s
+CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.s"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.s
+
+CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o: CMakeFiles/pitendo.dir/flags.make
+CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o: ../src/theBinaryGame/binaryGame.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o"
+	/usr/bin/g++-8  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o -c /home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp
+
+CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.i"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp > CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.i
+
+CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.s"
+	/usr/bin/g++-8 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp -o CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.s
 
 # Object files for target pitendo
 pitendo_OBJECTS = \
 "CMakeFiles/pitendo.dir/pitendo.cpp.o" \
-"CMakeFiles/pitendo.dir/src/controller.cpp.o" \
-"CMakeFiles/pitendo.dir/src/display.cpp.o" \
-"CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o"
+"CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o" \
+"CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o" \
+"CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o" \
+"CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o"
 
 # External object files for target pitendo
 pitendo_EXTERNAL_OBJECTS =
 
 pitendo: CMakeFiles/pitendo.dir/pitendo.cpp.o
-pitendo: CMakeFiles/pitendo.dir/src/controller.cpp.o
-pitendo: CMakeFiles/pitendo.dir/src/display.cpp.o
-pitendo: CMakeFiles/pitendo.dir/src/pitendo_game_engine.cpp.o
+pitendo: CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o
+pitendo: CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o
+pitendo: CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o
+pitendo: CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o
 pitendo: CMakeFiles/pitendo.dir/build.make
 pitendo: CMakeFiles/pitendo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable pitendo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pi/Documents/repos/pitendo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable pitendo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pitendo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

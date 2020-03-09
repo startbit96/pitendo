@@ -9,12 +9,25 @@ Gaming on Raspberry Pi in C++.
 
 
 # Installations-Anweisung.
-1. Installiere den Terminal-Emulator "xterm":
+1. Empfohlene Ordnerstruktur: Erstelle im Ordner "Documents" den Ordner "repos" und wechsele in diesen.
+```
+cd Documents
+mkdir repos
+cd repos
+```
+
+2. Downloade das Git-Repository und wechsele in den gedownloadeten Ordner.
+```
+git clone https://github.com/startbit96/pitendo.git
+cd pitendo
+```
+
+3. Installiere den Terminal-Emulator "xterm":
 ```
 sudo apt-get install xterm
 ```
 
-2. Aktiviere die quadratische Schriftart "square":
+4. Aktiviere die quadratische Schriftart "square":
 ```
 mkdir ~/.fonts
 cp res/square.ttf ~/.fonts/

@@ -222,7 +222,6 @@ GameEngine::GameEngine(int screenWidth, int screenHeight) {
     this->mainMenu = new Menu(screenWidth, screenHeight);
     this->mainMenu->addEntry("Optionen", &optionMenu::menuStart);
     this->mainMenu->addEntry("Pitendo beenden", &pitendoExit);
-    this->mainMenu->deleteEntry(2);
 
     // Optionen-Menue definieren.
     this->optionMenu = new Menu(this->screenWidth, this->screenHeight);
