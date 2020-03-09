@@ -1,11 +1,7 @@
 #include <iostream>
-#include <wiringPi.h>
-#include "controller.h"
-#include "display.h"
 #include "pitendo_game_engine.h"
 
 using namespace std;
-
 
 int main(int argc, char** argv) {
     // ##############################################################################
@@ -34,10 +30,11 @@ int main(int argc, char** argv) {
     }
     else {
         cerr << "Pitendo konnte nicht eingerichtet werden." << endl;
-        cout << "ENTER zum Beenden druecken ..." << endl;
+        cout << "Zum Beenden ENTER druecken ..." << endl;
         cin.get(); // Nutzereingabe abwarten, damit Nutzer Zeit hat, Fehlermeldung zu lesen.
         return -1;
     }
+
 
 
     // ##############################################################################
@@ -51,34 +48,24 @@ int main(int argc, char** argv) {
     // #####                    PITENDO-DAUERSCHLEIFE                           #####
     // ##############################################################################
 
-    // Buttonfunktionen setzen.
-    controllerP1->buttonGruen->buttonFunktion = &clearScreen;
-    controllerP1->buttonRot->buttonFunktion = &pitendoExit;
-    controllerP2->buttonRot->buttonFunktion = &moveDown;
-    controllerP2->buttonBlau->buttonFunktion = &moveLeft;
-    controllerP2->buttonGelb->buttonFunktion = &moveRight;
 
-    float x, y;
+    // Willkommens-Bildschirm.
+    pitendoStartScreen();
+
     // Dauerschleife.
     while(pitendoGE->isRunning == true) {
-        controllerP1->execute();
-        controllerP2->execute();
-        controllerP1->joystick->getPosition(x, y);
-        if (x < -0.5) {
-            moveLeft();
-        }
-        else if (x > 0.5) {
-            moveRight();
-        }
-        if (y < -0.5) {
-            moveDown();
-        }
-        else if (y > 0.5) {
-            moveUp();
-        }
+        // Die der Game-Engine hinterlegte Funktion ausfuehren.
+        pitendoGE->gameEngineFunktion();
+
+        // Display aktualisieren.
         cout << flush;
+        
+        // System pausieren (fps einstellen).
+        // MUSS NOCH IN DIE GAMEENGINE INTEGRIERT WERDEN.
         delay(20);
     }
+
+
 
     // ##############################################################################
     // #####                    ABSCHLIESSENDE HANDLUNGEN                       #####

@@ -82,7 +82,7 @@ Aenderungshistorie:
 
 // Definition SPI-Schnittstelle.
 #define DEF_SPI_CHANNEL             0
-#define DEF_SPI_CLOCK_SPEED         500000
+#define DEF_SPI_CLOCK_SPEED         1000000
 
 // Channel-Belegung des Analog-Digital-Wandlers.
 #define DEF_CH_JOYSTICK_X_C1        1
@@ -119,7 +119,9 @@ class Button {
 
         // Statische Methoden.
         static void defaultButtonFunktion();    // Mit dieser Funktion wird jeder neue Button zu beginnt
-                                                // initialisiert.
+                                                // initialisiert. Sie macht i.d.R. gar nichts.
+        static void testButtonFunktion();       // Diese Funktion dient dem Hardware-Check.
+                                                // Bei Knopfdruck wird etwas auf den Bildschirm geschrieben.
     
     protected:
 
@@ -158,7 +160,7 @@ class Joystick {
         int channelX, channelY;   // Gibt die Channels des AD-Wandlers an.
         int adcMittelX, adcMinX, adcMaxX;   // Fuer die Bestimmung des Ausschlages des Joysticks.
         int adcMittelY, adcMinY, adcMaxY;   // Diese Werte koennen durch die Kalibrierung veraendert werden.
-        const int nLengthIdle = 10;         // Fuer Funktion "getMovement" --> Wartezyklen bei Wiederabfrage.
+        const int nLengthIdle = 15;         // Fuer Funktion "getMovement" --> Wartezyklen bei Wiederabfrage.
         int idleUp, idleDown, idleLeft, idleRight;
 }; // Klasse Joystick.
 
@@ -187,6 +189,12 @@ class Controller {
         void execute();     // Fuehrt die Funktionen aller Buttons aus, sollten
                             // sie gedrueckt wurden sein.
         bool isConnected(); // Ueberprueft, ob Controller angeschlossen ist.
+        void setButtonFunctions(void (*buttonFunktionGruen)(void),      // Setzt mit einem Schlag alle Buttonfunktionen.
+                                void (*buttonFunktionRot)(void),
+                                void (*buttonFunktionGelb)(void),
+                                void (*buttonFunktionBlau)(void),
+                                void (*buttonFunktionStart)(void),
+                                void (*buttonFunktionJoystick)(void));
 
         // Public-Attribute.
         // Buttons.
@@ -239,5 +247,13 @@ void interruptButtonJoystickC2(void);
 
 // Initialisiert die beiden Controller und deren Funktionalitaeten.
 bool controllerSetup();
+
+// Fuehrt die Funktionen beider Controller aus.
+// Diese Funktion ist fuer den ButtonHandler gedacht.
+void controllerExecute();
+
+// Deaktiviert die klasseneigenen Controller-Callbacks.
+// (sinnvoll, wenn Button-Handling durch separate Funktion betrieben wird.)
+void controllerDeactivate();
 
 #endif /*!_CONTROLLER_H_*/

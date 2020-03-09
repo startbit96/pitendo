@@ -7,79 +7,95 @@
 Tim Schwarzbrunn
 
 Diese Datei dient der Bereitstellung von Funktionalitaeten im Terminal.
-Grundlage fuer viele Operationen sind Escape-Sequenzen.
+Grundlage fuer die Cursor-Operationen sind Escape-Sequenzen.
 (siehe z.B. http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html)
+
+Ausserdem wird eine Klasse fuer die Integration von Menues angeboten.
 
 ###############################################################################
 */
 
 
-#include <string.h>
+#include <string>
+#include <vector>
 
-//bool setupDisplay();
+
+
+// ##############################################################################
+// #####                        GRUNDFUNKTIONEN                             #####
+// ##############################################################################
+
+
+// Cursor-Bewegungen: Relativ.
 void moveCursorUp(int numberOfSteps = 1);
 void moveCursorDown(int numberOfSteps = 1);
 void moveCursorLeft(int numberOfSteps = 1);
 void moveCursorRight(int numberOfSteps = 1);
 
+
+// Cursor-Bewegung: Absolut.
+// Hinweis: Es findet keine Ueberpruefung statt, ob die angegebenen Werte innerhalb der eigentlichen Terminalgroesse liegen.
+void setCursorPosition(int x, int y);
+
+
+// Terminal-Fenster komplett loeschen. Der Cursor springt im Anschluss auf die Position {1, 1} (= oben links).
 void clearScreen();
 
-void moveUp();
-void moveDown();
-void moveLeft();
-void moveRight();
-
-/*
-void setCursorPosition(int x, int y);
-void getCursorPosition(int &x, int &y);
-void getCursorLimits(int &x, int &y);
 
 
-class Cursor {
+// ##############################################################################
+// #####                        KLASSE MENUE                                #####
+// ##############################################################################
+
+class Menu {
     public:
-        Cursor();       // Konstruktor.
-        ~Cursor();      // Destruktor.
-    protected:
+        Menu(int x_max, int y_max);  // Konstruktor mit Rahmenbegrenzung.
+        ~Menu();       // Destruktor.
 
-    private:
-        int x, y;
-}
+        // Managen der Eintraege.
+        // Hinzufuegen eines neuen Menue-Eintrags. Position gibt an, wo genau der Eintrag angefuegt werden soll.
+        void addEntry(std::string text, void (*menuFunction)(void), int position = -1);
+        bool deleteEntry(int position);         // Loeschen eines Menue-Eintrags.
 
-class Display {
-    public:
-        int width, height;
-    protected:
+        // Bewegung der Auswahl.
+        void moveUp();          // Bewegt die Auswahl im Menue um eins nach oben.
+        void moveDown();        // Bewegt die Auswahl im Menue um eins nach unten.
+        void resetPosition();   // Setzt die Position wieder auf das erste Element.
 
-    private:
+        // Ausfuehren.
+        void execute();         // Aktiviert die hinter der aktuellen Auswahl abgelegte Funktion.
 
-};
+        // Visualisierung. Gibt das Menue am Bildschirm aus.
+        void draw();
 
-class Menue {
-    public:
-        void addMenueEntry();
-        void deleteMenueEntry();
-        void execute();
-        void moveUp();
-        void moveDown();
+        // Aktualisiert nur den Marker bei Aenderung der Auswahl im Menue.
+        void refresh(int positionOld);
+
+        // Individualisierung. Aendert das Marker-Zeichen.
+        bool setMarker(std::string marker);
 
     protected:
 
     private:
+        // Groesse des Terminals.
+        int x_max, y_max;
+        // Laenge des laengsten Menue-Textes.
+        int maxTextLength;
+        // Ermittlung der Zeichen-Nullposition.
+        void getMenuPosition(int &x, int &y);
+        
+        // Handling.
         int numberOfEntries;
         int currentPosition;
-};
 
-class MenueEintrag {
-    public:
-        string menueText;
-        void (*menueFunktion)(void); // Zeiger auf die Funktion hinter dem Menueeintrag.
-    protected:
+        // Individualisierung.
+        std::string marker;     // Zeichen, mit dem die Position im Menue markiert wird.
 
-    private:
+        // Die eigentlichen Eintraege inkl. hinterlegter Funktionen.
+        std::vector<std::string> vectorMenuText;
+        std::vector<void (*)()> vectorMenuFunctions;
 
-}
-
-*/
+}; // Klasse Menue.
 
 
 #endif /*!_DISPLAY_H_*/

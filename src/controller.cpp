@@ -110,9 +110,17 @@ bool Button::wasPressed() {
 
 
 // Mit dieser Funktion wird jeder neue Button zu Beginn initialisiert.
+// Sie macht i.d.R. gar nichts.
 void Button::defaultButtonFunktion() {
     // Mache einfach nix.
 } // Button::defaultButtonFunktion.
+
+
+// Diese Funktion dient dem Hardware-Check.
+// Bei Knopfdruck wird etwas auf den Bildschirm geschrieben.
+void Button::testButtonFunktion() {
+    cout << "Button gedrueckt." << endl;
+} // Button::testButtonFunktion.
 
 
 // ##############################################################################
@@ -226,7 +234,7 @@ void Joystick::getPosition(float &x, float &y) {
 // zaehler aktualisiert!
 void Joystick::getMovement(bool &up, bool &down, bool &left, bool &right) {
     // Variablen-Definition.
-    const float joystickThreshold = 0.8;
+    const float joystickThreshold = 0.8f;
 
     // Abfrage der aktuellen Joystick-Position.
     float x, y;
@@ -369,11 +377,9 @@ Controller::~Controller() {
 
 // Setzt die Werte aller Buttons zurueck.
 void Controller::refresh() {
-    this->buttonGruen->refresh();
-    this->buttonRot->refresh();
-    this->buttonBlau->refresh();
-    this->buttonGelb->refresh();
-    this->buttonStart->refresh();
+    for (int i = 0; i < DEF_NUM_BUTTONS; i++) {
+        buttonHandler[i]->refresh();
+    }
 } // Controller::refresh.
 
 
@@ -399,6 +405,21 @@ bool Controller::isConnected() {
         return false;
     }
 } // Controller:isConnected.
+
+// Setzt mit einem Schlag alle Buttonfunktionen.
+void Controller::setButtonFunctions(void (*buttonFunktionGruen)(void),
+                        void (*buttonFunktionRot)(void),
+                        void (*buttonFunktionGelb)(void),
+                        void (*buttonFunktionBlau)(void),
+                        void (*buttonFunktionStart)(void),
+                        void (*buttonFunktionJoystick)(void)) {
+    this->buttonGruen->buttonFunktion = buttonFunktionGruen;
+    this->buttonRot->buttonFunktion = buttonFunktionRot;
+    this->buttonGelb->buttonFunktion = buttonFunktionGelb;
+    this->buttonBlau->buttonFunktion = buttonFunktionBlau;
+    this->buttonStart->buttonFunktion = buttonFunktionStart;
+    this->buttonJoystick->buttonFunktion = buttonFunktionJoystick;
+} // Controller::setButtonFunctions.
 
 
 // ##############################################################################
@@ -486,13 +507,44 @@ bool controllerSetup() {
     // Controller 1.
     if (controllerP1->isConnected() == true)
         cout << "Controller #1 ist verbunden." << endl;
-    else
+    else {
         cout << "Controller #1 ist nicht verbunden!" << endl;
+        return false;
+    }
     // Controller 2.
     if (controllerP2->isConnected() == true)
         cout << "Controller #2 ist verbunden." << endl;
-    else
+    else {
         cout << "Controller #2 ist nicht verbunden!" << endl;
+        return false;
+    }
 
     return true;
-}
+} // controllerSetup.
+
+
+// Fuehrt die Funktionen beider Controller aus.
+// Diese Funktion ist fuer den ButtonHandler gedacht.
+void controllerExecute() {
+    controllerP1->execute();
+    controllerP2->execute();
+} // controllerExecute.
+
+
+// Deaktiviert die klasseneigenen Controller-Callbacks.
+// (sinnvoll, wenn Button-Handling durch separate Funktion betrieben wird.)
+void controllerDeactivate() {
+    controllerP1->setButtonFunctions(   &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion);
+    controllerP2->setButtonFunctions(   &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion,
+                                        &Button::defaultButtonFunktion);
+} // controllerDeactivate.
+
