@@ -214,7 +214,7 @@ class Controller {
         Button* buttonJoystick;
 
         // Joystick.
-        Joystick* joystick;```
+        Joystick* joystick;
         
     protected:
 

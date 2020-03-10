@@ -2,10 +2,12 @@
 Gaming on Raspberry Pi in C++.
 
 # To Do:
-1. Bereitstellung der Controller inkl. der Ansteuerung.
-2. Menü.
-3. Zeichen-Funktionen.
-4. Beispiel-Spiel??
+1. Bereitstellung der Controller inkl. der Ansteuerung. --> CHECK
+2. Menü. --> CHECK
+3. Zeichen-Funktionen. --> CHECK
+4. Beispiel-Spiel. --> CHECK
+5. Joystick-Kalibrierung. --> OFFEN
+6. Musik für Startbildschirm und Menüs. --> OFFEN.
 
 
 # Installations-Anweisung.
@@ -37,26 +39,39 @@ fc-cache
 5. Das Projekt wird mittels cmake gelinkt und kompiliert. Gegebenfalls muss cmake heruntergeladen werden und die IDE angepasst werden.
 
 
+
 # Übersicht der Dateien.
 1. framework: display.h und display.cpp
+
 Diese Dateien stellen grundlegende Zeichenfunktionen sowie eine Klasse für das Erstellen von Menüs analog Haupt- und Pausenmenü zur Verfügung.
 
+
 2. framework: controller.h und controller.cpp
+
 Diese Dateien binden die Controller ein. Es werden Funktionen zur Taster-Drücker-Erkennung sowie zur Positionsauslesung des Joysticks gestellt.
 
+
 3. framework: pitendo_game_engine.h und pitendo_game_engine.cpp
+
 Diese Dateien beinhalten die Game-Engine, welche den zeitlichen Ablauf im Programm steuert (FPS-Einstellung, ...).
 Außerdem werden hier das Hauptmenü und das Optionsmenü (Pausenmenü) gemanaged.
 
+
 4. Hauptdatei: pitendo.cpp
+
 Diese Datei ist die grundlegende Pitendo-Datei, welche den Pitendo-Start, die Pitendo-Dauerschleife und das Pitendo-Herunterfahren beinhaltet.
 Außerdem werden an dieser Stelle die Spiele eingebunden.
 
+
 5. Vorlage-Spiel: template.h und template.cpp
+
 Diese beiden Dateien zeigen beispielhaft die Implementierung eines Spiels in Pitendo auf. 
 Es werden die Grundfunktionen definiert, welche jedes Spiel zu stellen hat.
 Es kann als Vorlage fuer die Entwicklung eines eigenen Spiels genutzt werden. 
 (Bitte hierfür kopieren und umbenennen. Nicht in der ursprünglichen Datei arbeiten.)
+
+Positionen, welche anzupassen sind, sind mit "##### MUSS ANGEPASST WERDEN #####" gekennzeichnet.
+
 
 
 # Grundlegende Funktionen (Details siehe Header-Files).
