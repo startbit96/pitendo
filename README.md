@@ -91,18 +91,24 @@ controllerP1->buttonGruen->wasPressed()
 
 Vorteil Möglichkeit 1:
 - Nutzung der Implementierung
+
 Nachteil Möglichkeit 1:
 - Es können keine Memberfunktionen von Objekten verknüpft werden.
 - Es müssen Funktionen ohne Rückgabe- und Übergabewert sein (void ()()).
+
 Einsatzmöglichkeit:
 - Im Spiel.
 
+
 Vorteil Möglichkeit 2:
 - Individuelle Nutzung.
+
 Nachteil Möglichkeit 2:
 - Vermutlich ein wenig mehr Code-Aufwand, da bereits bestehende Implementierung nicht genutzt wird.
+
 Einsatzmöglichkeit:
 - In Menüs.
+
 
 3. Nutzung des Joysticks.
 Zugriff auf Joystick:
