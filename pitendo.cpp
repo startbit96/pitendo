@@ -1,6 +1,9 @@
 #include <iostream>
 #include "pitendo_game_engine.h"
 
+// Spiele koennen hier eingeladen werden.
+#include "template.h"
+
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -40,7 +43,9 @@ int main(int argc, char** argv) {
     // ##############################################################################
     // #####                    SPIELE-REGISTRIERUNG                            #####
     // ##############################################################################
-
+    
+    // Spiele befinden sich spaeter in umgekehrter Reihenfolge im Menue.
+    pitendoGE->addGame("Vorlage-Spiel", &gameTemplate::gameStart);
 
 
 
@@ -61,8 +66,7 @@ int main(int argc, char** argv) {
         cout << flush;
         
         // System pausieren (fps einstellen).
-        // MUSS NOCH IN DIE GAMEENGINE INTEGRIERT WERDEN.
-        delay(20);
+        pitendoGE->adjustFPS();
     }
 
 

@@ -6,3 +6,31 @@
 
 #IncludeRegexTransform: 
 
+../inc/pitendoGameEngine/controller.h
+
+../inc/pitendoGameEngine/display.h
+string
+-
+vector
+-
+
+../inc/pitendoGameEngine/pitendo_game_engine.h
+wiringPi.h
+-
+string
+-
+controller.h
+../inc/pitendoGameEngine/controller.h
+display.h
+../inc/pitendoGameEngine/display.h
+
+../inc/template/template.h
+
+/home/pi/Documents/repos/pitendo/src/template/template.cpp
+iostream
+-
+pitendo_game_engine.h
+/home/pi/Documents/repos/pitendo/src/template/pitendo_game_engine.h
+template.h
+/home/pi/Documents/repos/pitendo/src/template/template.h
+

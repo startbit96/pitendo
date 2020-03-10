@@ -231,32 +231,32 @@ src/pitendoGameEngine/pitendo_game_engine.cpp.s:
 	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.s
 .PHONY : src/pitendoGameEngine/pitendo_game_engine.cpp.s
 
-src/theBinaryGame/binaryGame.o: src/theBinaryGame/binaryGame.cpp.o
+src/template/template.o: src/template/template.cpp.o
 
-.PHONY : src/theBinaryGame/binaryGame.o
+.PHONY : src/template/template.o
 
 # target to build an object file
-src/theBinaryGame/binaryGame.cpp.o:
-	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o
-.PHONY : src/theBinaryGame/binaryGame.cpp.o
+src/template/template.cpp.o:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/template/template.cpp.o
+.PHONY : src/template/template.cpp.o
 
-src/theBinaryGame/binaryGame.i: src/theBinaryGame/binaryGame.cpp.i
+src/template/template.i: src/template/template.cpp.i
 
-.PHONY : src/theBinaryGame/binaryGame.i
+.PHONY : src/template/template.i
 
 # target to preprocess a source file
-src/theBinaryGame/binaryGame.cpp.i:
-	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.i
-.PHONY : src/theBinaryGame/binaryGame.cpp.i
+src/template/template.cpp.i:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/template/template.cpp.i
+.PHONY : src/template/template.cpp.i
 
-src/theBinaryGame/binaryGame.s: src/theBinaryGame/binaryGame.cpp.s
+src/template/template.s: src/template/template.cpp.s
 
-.PHONY : src/theBinaryGame/binaryGame.s
+.PHONY : src/template/template.s
 
 # target to generate assembly for a file
-src/theBinaryGame/binaryGame.cpp.s:
-	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.s
-.PHONY : src/theBinaryGame/binaryGame.cpp.s
+src/template/template.cpp.s:
+	$(MAKE) -f CMakeFiles/pitendo.dir/build.make CMakeFiles/pitendo.dir/src/template/template.cpp.s
+.PHONY : src/template/template.cpp.s
 
 # Help Target
 help:
@@ -279,9 +279,9 @@ help:
 	@echo "... src/pitendoGameEngine/pitendo_game_engine.o"
 	@echo "... src/pitendoGameEngine/pitendo_game_engine.i"
 	@echo "... src/pitendoGameEngine/pitendo_game_engine.s"
-	@echo "... src/theBinaryGame/binaryGame.o"
-	@echo "... src/theBinaryGame/binaryGame.i"
-	@echo "... src/theBinaryGame/binaryGame.s"
+	@echo "... src/template/template.o"
+	@echo "... src/template/template.i"
+	@echo "... src/template/template.s"
 .PHONY : help
 
 

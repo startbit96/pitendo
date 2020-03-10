@@ -3,7 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o"
   "CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o"
   "CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o"
-  "CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o"
+  "CMakeFiles/pitendo.dir/src/template/template.cpp.o"
   "pitendo.pdb"
   "pitendo"
 )

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp" "/home/pi/Documents/repos/pitendo/build/CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o"
   "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp" "/home/pi/Documents/repos/pitendo/build/CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o"
   "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp" "/home/pi/Documents/repos/pitendo/build/CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o"
-  "/home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp" "/home/pi/Documents/repos/pitendo/build/CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o"
+  "/home/pi/Documents/repos/pitendo/src/template/template.cpp" "/home/pi/Documents/repos/pitendo/build/CMakeFiles/pitendo.dir/src/template/template.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -16,7 +16,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../inc"
   "../inc/pitendoGameEngine"
-  "../inc/theBinaryGame"
+  "../inc/template"
   )
 
 # Targets to which this target links.

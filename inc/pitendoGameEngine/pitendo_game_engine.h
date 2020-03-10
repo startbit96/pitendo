@@ -14,8 +14,12 @@ der Bereitstellung einer terminalbasierten grafischen Benutzeroberflaeche aus.
 #define _PITENDO_GAME_ENGINE_H_
 
 #include <wiringPi.h>
+#include <string>
 #include "controller.h"
 #include "display.h"
+
+
+#define DEF_DEFAULT_FPS     30
 
 
 // ##############################################################################
@@ -67,16 +71,43 @@ class GameEngine {
         // aufgerufen.
         void (*gameEngineFunktion)(void);
 
+        // Zeitliches Timing in der Dauerschleife.
+        // Linux ist kein Echtzeit-Betriebssystem, daher sind die FPS eher als ueber 
+        // den Daumen gepeilt anzusehen.
+        bool setFPS(int fps);
+        void adjustFPS();
+
         // Eigenschaften des Displays.
-        int screenHeight;
-        int screenWidth;
+        int screenWidth, screenHeight;
 
         // Haupt- und Optionen-Menue.
         Menu *mainMenu;
         Menu *optionMenu;
+
+        // Hinzufuegen eines neuen Spieles mit Uebergabe der Spielstart-Funktion.
+        void addGame(std::string gameName, void (*gameStartFunction)(void));
+
+        // Wenn ein Spiel gestartet wurde, ist auch das Optionen-Menue an die spieleigene
+        // Pausenfunktion und Beendenfunktion anzupassen.
+        bool customiseOptionMenu(void (*gameReturnFunction)(void), void (*gameStopFunction)(void));
+        // Wenn das Spiel verlassen wurde, ist die eben angesprochene Anpassung des
+        // Optionenmenues wieder rueckgaengig zu machen.
+        bool resetOptionMenu();
+
     protected:
+
     private:
-        static void defaultGameEngineFunction();    // Funktion fuer die Initialisierung.
+        // Funktion fuer die Initialisierung.
+        static void defaultGameEngineFunction();
+
+        // Fuer das interne Handling.
+        enum enumPitendoState { PITENDO_WAITING,
+                                PITENDO_RUNNING};
+        enumPitendoState pitendoState;
+
+        // Zeitliches Timing. 
+        unsigned int fps;
+        unsigned int loopTimeOld;
 }; // Klasse GameEngine.
 
 // Unsere Game-Engine fuer Pitendo.

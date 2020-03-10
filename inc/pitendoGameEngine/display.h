@@ -20,7 +20,6 @@ Ausserdem wird eine Klasse fuer die Integration von Menues angeboten.
 #include <vector>
 
 
-
 // ##############################################################################
 // #####                        GRUNDFUNKTIONEN                             #####
 // ##############################################################################

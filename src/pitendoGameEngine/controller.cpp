@@ -23,6 +23,8 @@ Button::Button(int pinNummer) {
     pinMode (pinNummer, INPUT);
 
     // Interrupt setzen.
+    // Memberfunktionen gehen leider nicht, daher muss fuer jeden Button eine eigene
+    // Funktion hinterlegt werden.
     switch (pinNummer) {
         case DEF_PIN_BTN_GRUEN_C1:
             wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGruenC1);
@@ -68,6 +70,7 @@ Button::Button(int pinNummer) {
     this->pinNummer = pinNummer;
     this->bPressed = false;
     this->buttonFunktion = &Button::defaultButtonFunktion;
+    this->timeLastPressed = 0;
 
 } // Button::Button.
 
@@ -103,8 +106,39 @@ bool Button::isPressed() {
 // Setzt im Anschluss den boolschen Wert zurueck (refresh).
 // Umsetzung mittels Interrupt.
 bool Button::wasPressed() {
-    bool bReturn = this->bPressed;
-    this->refresh();
+    bool bReturn;
+    if (this->bPressed == true) {
+        // Button wurde seit letzter Abfrage gedrueckt.
+        // Ueberpruefe, ob Zeit zwischen letzter Abfrage und dieser Abfrage
+        // gross genug ist (filtere Tasterprellen heraus).
+        unsigned int timePressed = millis();
+        // Wurde zufaellig unsigned int Grenze ueberschritten (aller 71 Minuten)?
+        if (timePressed < this->timeLastPressed) {
+            // In diesem seltenen Fall funktioniert Software-Entprellung nicht.
+            // Koennte theoretisch noch behoben werden, aber naaeeehhh.
+            bReturn = true;
+            // Zeit neu abspeichern.
+            this->timeLastPressed = timePressed;
+        }
+        else {
+            if ((timePressed - this->timeLastPressed) >= DEF_BUTTON_IDLE) {
+                bReturn = true;
+                // Zeit neu abspeichern.
+                this->timeLastPressed = timePressed;
+            }
+            else {
+                // Es handelt sich um Prellen. 
+                // Dies soll nicht als Button-Druck verstanden werden.
+                bReturn = false;
+            }
+        }
+        // Button zuruecksetzen.
+        this->refresh();
+    }
+    else {
+        // Button wurde seit letzter Abfrage nicht gedrueckt.
+        bReturn = false;
+    }
     return bReturn;
 } // Button::wasPressed.
 

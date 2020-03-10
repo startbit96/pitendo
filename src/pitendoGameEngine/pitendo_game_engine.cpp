@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -33,14 +33,14 @@ bool pitendoInit() {
 
     // Ist auf dem Raspberry Pi xterm installiert? Dies ist der in dem Projekt Pitendo verwendete Terminal-Emulator.
     if (FILE *file = fopen("/usr/bin/xterm", "r")) {
-        // IO.
+        // i.O.
         fclose(file);
         cout << "Terminal-Emulator xterm ist installiert." << endl;
     }
     else {
-        // NIO.
-        cerr << "Auf dem Raspberry Pi ist kein xterm installiert." << endl;
-        cerr << "Installiere erst mittels \"sudo apt-get install xterm\" den Terminal-Emulator." << endl;
+        // n.i.O.
+        cout << "Auf dem Raspberry Pi ist kein xterm installiert." << endl;
+        cout << "Installiere erst mittels \"sudo apt-get install xterm\" den Terminal-Emulator." << endl;
         return false;
     }
 
@@ -48,14 +48,14 @@ bool pitendoInit() {
     // Quadratisch bedeutet, dass Zeichen gleich hoch wie breit sind.
     // Pruefe daher, ob die Schrift "square" installiert ist.
     if (FILE *file = fopen("/home/pi/.fonts/square.ttf", "r")) {
-        // IO.
+        // i.O.
         fclose(file);
         cout << "Schriftart square gefunden." << endl;
     }
     else {
-        // NIO.
-        cerr << "Auf dem Raspberry Pi ist kein square installiert." << endl;
-        cerr << "Siehe README.md fuer mehr Informationen zur Installation." << endl;
+        // n.i.O.
+        cout << "Auf dem Raspberry Pi ist kein square installiert." << endl;
+        cout << "Siehe README.md fuer mehr Informationen zur Installation." << endl;
         return false;
     }
 
@@ -84,7 +84,7 @@ bool pitendoSetup() {
         cout << "Controller erfolgreich initalisiert." << endl;
     }
     else {
-        cerr << "Controller konnte nicht initialisiert werden." << endl;
+        cout << "Controller konnte nicht initialisiert werden." << endl;
         return false;
     }
 
@@ -217,6 +217,9 @@ GameEngine::GameEngine(int screenWidth, int screenHeight) {
     this->gameEngineFunktion = &defaultGameEngineFunction;
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
+    this->pitendoState = PITENDO_WAITING;
+    this->fps = DEF_DEFAULT_FPS;
+    this->loopTimeOld = 0;
 
     // Haupt-Menue definieren.
     this->mainMenu = new Menu(screenWidth, screenHeight);
@@ -225,7 +228,7 @@ GameEngine::GameEngine(int screenWidth, int screenHeight) {
 
     // Optionen-Menue definieren.
     this->optionMenu = new Menu(this->screenWidth, this->screenHeight);
-    this->optionMenu->addEntry("Hauptmenü", &mainMenu::menuStart);
+    this->optionMenu->addEntry("Hauptmenue", &mainMenu::menuStart);
 
 } // GameEngine::GameEngine.
 
@@ -235,10 +238,96 @@ GameEngine::~GameEngine() {
 
 } // GameEngine::~GameEngine.
 
+
+// Zeitliches Timing in der Dauerschleife.
+// Linux ist kein Echtzeit-Betriebssystem, daher sind die FPS eher als ueber 
+// den Daumen gepeilt anzusehen.
+// FPS setzen.
+bool GameEngine::setFPS(int fps) {
+    if ((fps > 0) && (fps <= 100)) {
+        this->fps = fps;
+        return true;
+    }
+    else {
+        return false;
+    }
+} // GameEngine::setFPS.
+
+
+// FPS einstellen.
+void GameEngine::adjustFPS() {
+    // System pausieren.
+    unsigned int loopTimeNew = millis();
+    // Sichergehen, dass Werte im zulaessigen Bereich sind und die unsigned int Grenze
+    // nicht ueberlaufen wurde.
+    if (loopTimeNew > this->loopTimeOld) {
+        // Muss ueberhaupt noch gewartet werden oder hinken wir eh bereits hinterher?
+        int delayTime = (int)(1000 / this->fps) - (loopTimeNew - this->loopTimeOld);
+        if (delayTime > 0) {
+            delay(delayTime);
+        }
+    }
+    // "Neue alte" Zeit speichern.
+    this->loopTimeOld = millis();
+} // GameEngine::adjustFPS.
+
+
+// Hinzufuegen eines neuen Spieles mit Uebergabe der Spielstart-Funktion.
+void GameEngine::addGame(std::string gameName, void (*gameStartFunction)(void)) {
+    this->mainMenu->addEntry(gameName, gameStartFunction, 1);
+} // GameEngine::addGame.
+
+
+// Wenn ein Spiel gestartet wurde, ist auch das Optionen-Menue an die spieleigene
+// Pausenfunktion und Beendenfunktion anzupassen.
+bool GameEngine::customiseOptionMenu(void (*gameReturnFunction)(void), void (*gameStopFunction)(void)) {
+    // Ueberpruefe Pitendo-State, ob Anpassung erfolgen darf.
+    if (this->pitendoState != PITENDO_WAITING) {
+        // Ein Fehler liegt vor!
+        // Hinweis: Menue wurde wohl an anderer Stelle bereits angepasst oder zuvor nicht resettet.
+        cout << "Fehler in Implementierung der Options-Menue-Anpassung." << endl;
+        cout << "Option-Menue wurde seit der letzten Menue-Anpassung nicht mehr resettet." << endl;
+        return false;
+    }
+    // Eintrag "Weiterspielen" anlegen.
+    this->optionMenu->addEntry("Weiterspielen", gameReturnFunction, 1);
+    // Eintrag "Hauptmenue" loeschen und mit spielindividueller Menue-Aufruf-Funktion neu ablegen.
+    this->optionMenu->deleteEntry(0);
+    this->optionMenu->addEntry("Hauptmenue", gameStopFunction);
+    // Pitendo-State aktualisieren.
+    this->pitendoState = PITENDO_RUNNING;
+    return true;
+} // GameEngine::customiseOptionMenu.
+
+
+// Wenn das Spiel verlassen wurde, ist die eben angesprochene Anpassung des
+// Optionenmenues wieder rueckgaengig zu machen.
+bool GameEngine::resetOptionMenu() {
+    // Ueberpruefe Pitendo-State, ob Reset erfolgen darf.
+    if (this->pitendoState != PITENDO_RUNNING) {
+        // Ein Fehler liegt vor!
+        // Hinweis: Menue wurde wohl an anderer Stelle bereits resettet oder gar nicht erst angepasst?
+        cout << "Fehler in Implementierung der Options-Menue-Anpassung. (Reset)" << endl;
+        cout << "Options-Menue soll resettet werden, wurde aber bislang gar nicht angepasst." << endl;
+        return false;
+    }
+    // Eintrag "Weiterspielen" loeschen.
+    this->optionMenu->deleteEntry(1);
+    // Eintrag "Hauptmenue" loeschen und mit normaler Menue-Aufruf-Funktion neu ablegen.
+    this->optionMenu->deleteEntry(0);
+    this->optionMenu->addEntry("Hauptmenue", &mainMenu::menuStart);
+    // Pitendo-State aktualisieren.
+    this->pitendoState = PITENDO_WAITING;
+    return true;
+} // GameEngine::resetOptionMenu.
+
+
+
 // Funktion fuer die Initialisierung.
 void GameEngine::defaultGameEngineFunction() {
     // Mache einfach nix.
 } // GameEngine::defaultGameEngineFunction.
+
 
 
 // ##############################################################################

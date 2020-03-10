@@ -1,3 +1,7 @@
+#ifndef _CONTROLLER_H_
+#define _CONTROLLER_H_
+
+
 /*
 ################################ CONTROLLER.H #################################
 Tim Schwarzbrunn
@@ -55,9 +59,6 @@ Aenderungshistorie:
 ###############################################################################
 */
 
-#ifndef _CONTROLLER_H_
-#define _CONTROLLER_H_
-
 
 // Anzahl Buttons pro Controller.
 #define DEF_NUM_BUTTONS             6
@@ -89,6 +90,9 @@ Aenderungshistorie:
 #define DEF_CH_JOYSTICK_Y_C1        0
 #define DEF_CH_JOYSTICK_X_C2        3
 #define DEF_CH_JOYSTICK_Y_C2        2
+
+// Software-Entprellen. Button-Leerlauf nach Pressen in ms.
+#define DEF_BUTTON_IDLE             100
 
 
 
@@ -128,6 +132,10 @@ class Button {
     private:
         // Private Attribute.
         int pinNummer;          // GPIO-Nummer des digitalen Eingangs.
+
+        // Software-Entprellen. Reine Hardware-Entprellung mittels Tiefpass funktioniert 
+        // leider nicht so gut wie erhofft.
+        unsigned int timeLastPressed;
     
 }; // Klasse Button.
 
@@ -206,7 +214,7 @@ class Controller {
         Button* buttonJoystick;
 
         // Joystick.
-        Joystick* joystick;
+        Joystick* joystick;```
         
     protected:
 

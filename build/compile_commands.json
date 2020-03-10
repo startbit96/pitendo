@@ -1,27 +1,27 @@
 [
 {
   "directory": "/home/pi/Documents/repos/pitendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/theBinaryGame  -g   -o CMakeFiles/pitendo.dir/pitendo.cpp.o -c /home/pi/Documents/repos/pitendo/pitendo.cpp",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/template  -g   -o CMakeFiles/pitendo.dir/pitendo.cpp.o -c /home/pi/Documents/repos/pitendo/pitendo.cpp",
   "file": "/home/pi/Documents/repos/pitendo/pitendo.cpp"
 },
 {
   "directory": "/home/pi/Documents/repos/pitendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/theBinaryGame  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/template  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/controller.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp",
   "file": "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/controller.cpp"
 },
 {
   "directory": "/home/pi/Documents/repos/pitendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/theBinaryGame  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/template  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/display.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp",
   "file": "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/display.cpp"
 },
 {
   "directory": "/home/pi/Documents/repos/pitendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/theBinaryGame  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp",
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/template  -g   -o CMakeFiles/pitendo.dir/src/pitendoGameEngine/pitendo_game_engine.cpp.o -c /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp",
   "file": "/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp"
 },
 {
   "directory": "/home/pi/Documents/repos/pitendo/build",
-  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/theBinaryGame  -g   -o CMakeFiles/pitendo.dir/src/theBinaryGame/binaryGame.cpp.o -c /home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp",
-  "file": "/home/pi/Documents/repos/pitendo/src/theBinaryGame/binaryGame.cpp"
+  "command": "/usr/bin/g++-8   -I/home/pi/Documents/repos/pitendo/inc -I/home/pi/Documents/repos/pitendo/inc/pitendoGameEngine -I/home/pi/Documents/repos/pitendo/inc/template  -g   -o CMakeFiles/pitendo.dir/src/template/template.cpp.o -c /home/pi/Documents/repos/pitendo/src/template/template.cpp",
+  "file": "/home/pi/Documents/repos/pitendo/src/template/template.cpp"
 }
 ]

@@ -99,14 +99,38 @@ void Menu::addEntry(string text, void (*menuFunction)(void), int position) {
 
 // Loeschen eines Menue-Eintrags.
 bool Menu::deleteEntry(int position) {
+    // Sind ueberhaupt Eintrage zum Loeschen vorhanden?
+    if (this->numberOfEntries == 0) {
+        cout << "Keine Eintraege zum Loeschen vorhanden!" << endl;
+        return false;
+    }
     // Angabe gueltig?
     if (position > this->numberOfEntries) {
         cout << "Ungueltige Positionsangabe in Menu::deleteEntry. position > numberOfEntries!" << endl;
         return false;
     }
-    else if (position < 1) {
-        cout << "Ungueltige Positionsangabe in Menu::deleteEntry. position muss >= 1 sein!" << endl;
+    else if (position < 0) {
+        cout << "Ungueltige Positionsangabe in Menu::deleteEntry. position muss >= 0 sein!" << endl;
         return false;
+    }
+    else if (position == 0) {
+        // Position = 0 gibt an, dass die letzte Position geloescht werden soll.
+        position = this->numberOfEntries;
+    }
+    // Ueberpruefe, ob die maximale Textlaenge betroffen ist.
+    if (this->vectorMenuText[position].length() == this->maxTextLength) {
+        // Maximale Textlaenge muss neu berechnet werden.
+        this->maxTextLength = 0;
+        for (int i = 0; i < this->numberOfEntries; i++) {
+            // Ueberspringe den gleich zu loeschenden Eintrag.
+            if (i == (position - 1)) {
+                continue;
+            }
+            // Suche unter allen anderen Texten nach dem Laengsten.
+            if (this->vectorMenuText[i].length() > this->maxTextLength) {
+                this->maxTextLength = this->vectorMenuText[i].length();
+            }
+        }
     }
     // Eintrag loeschen.
     this->vectorMenuText.erase(this->vectorMenuText.begin() + (position - 1));
