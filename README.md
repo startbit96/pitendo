@@ -106,11 +106,17 @@ Einsatzmöglichkeit:
 
 3. Nutzung des Joysticks.
 Zugriff auf Joystick:
+```
 controllerP1->joystick
 controllerP2->joystick
+```
 
 Digitale Nutzung über Memberfunktion (wurde Ausschlag über Schwellwert festgestellt?):
+```
 void getMovement(bool &up, bool &down, bool &left, bool &right);
+```
 
 Analoge Nutzung über Memberfunktion:
+```
 void getPosition(float &x, float &y);
+```
