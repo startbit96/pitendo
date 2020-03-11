@@ -6,7 +6,7 @@ Gaming on Raspberry Pi in C++.
 2. Menü. --> CHECK
 3. Zeichen-Funktionen. --> CHECK
 4. Beispiel-Spiel. --> CHECK
-5. Joystick-Kalibrierung. --> OFFEN
+5. Joystick-Kalibrierung. --> CHECK
 6. Musik für Startbildschirm und Menüs. --> OFFEN.
 
 
