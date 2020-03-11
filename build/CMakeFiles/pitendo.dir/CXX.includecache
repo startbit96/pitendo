@@ -24,6 +24,16 @@ controller.h
 display.h
 ../inc/pitendoGameEngine/display.h
 
+../inc/template/template.h
+
+/home/pi/Documents/repos/pitendo/pitendo.cpp
+iostream
+-
+pitendo_game_engine.h
+/home/pi/Documents/repos/pitendo/pitendo_game_engine.h
+template.h
+/home/pi/Documents/repos/pitendo/template.h
+
 /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp
 pitendo_game_engine.h
 /home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.h
@@ -39,4 +49,12 @@ unistd.h
 -
 algorithm
 -
+
+/home/pi/Documents/repos/pitendo/src/template/template.cpp
+iostream
+-
+pitendo_game_engine.h
+/home/pi/Documents/repos/pitendo/src/template/pitendo_game_engine.h
+template.h
+/home/pi/Documents/repos/pitendo/src/template/template.h
 

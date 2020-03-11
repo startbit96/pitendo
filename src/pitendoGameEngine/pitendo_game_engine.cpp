@@ -633,6 +633,14 @@ void mainMenu::menuHandler() {
 } // mainMenu::menuHandler.
 
 
+// Diese Funktion wird bei Verlassen des Menues durch die abloesende Funktion aufgerufen.
+// Hier ist es zum Beispiel moeglich, die Musik des Haupt-Menues zu beenden.
+void mainMenu::menuExit() {
+    // Aktuell gibt es nichts zu tun.
+    // Wird Musik eingebunden, sieht das jedoch schon anders aus.
+} // mainMenu::menuExit.
+
+
 // Einmaliger Aufruf, welcher intern die Button-Handler auf menueHandler abgibt.
 void optionMenu::menuStart() {
     // Menue darstellen.
@@ -675,3 +683,11 @@ void optionMenu::menuHandler() {
         pitendoGE->optionMenu->execute();
     }
 } // optionMenu::menuHandler.
+
+
+// Diese Funktion wird bei Verlassen des Menues durch die abloesende Funktion aufgerufen.
+// Hier ist es zum Beispiel moeglich, die Musik des Option-Menues zu beenden.
+void optionMenu::menuExit() {
+    // Aktuell gibt es nichts zu tun.
+    // Wird Musik eingebunden, sieht das jedoch schon anders aus.
+} // optionMenu::menuExit.

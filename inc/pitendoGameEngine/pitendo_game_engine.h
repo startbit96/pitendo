@@ -188,6 +188,9 @@ namespace mainMenu {
     void menuStart();
     // Dauerhafter Button-Handler.
     void menuHandler();
+    // Diese Funktion wird bei Verlassen des Menues durch die abloesende Funktion aufgerufen.
+    // Hier ist es zum Beispiel moeglich, die Musik des Haupt-Menues zu beenden.
+    void menuExit(); 
 } // namespace mainMenu.
 
 
@@ -197,6 +200,9 @@ namespace optionMenu {
     void menuStart();
     // Dauerhafter Button-Handler.
     void menuHandler();
+    // Diese Funktion wird bei Verlassen des Menues durch die abloesende Funktion aufgerufen.
+    // Hier ist es zum Beispiel moeglich, die Musik des Option-Menues zu beenden.
+    void menuExit(); 
 } // namespace optionMenu.
 
 

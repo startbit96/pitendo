@@ -25,6 +25,9 @@ gameTemplate::Ball *spielball1, *spielball2;
 // Diese Funktion wird einmalig aufgerufen, wenn im Hauptmenue das Spiel
 // angewaehlt wird. 
 void gameTemplate::gameStart() {                                                                        // ##### MUSS ANGEPASST WERDEN (namespace) #####
+    // Hauptmenue korrekt beenden.
+    mainMenu::menuExit();
+
     // Options-Menue an das Spiel anpassen.
     if (pitendoGE->customiseOptionMenu(&gameTemplate::gameReturn, &gameTemplate::gameStop) == false) {  // ##### MUSS ANGEPASST WERDEN (namespace) #####
         return;
@@ -84,6 +87,9 @@ void gameTemplate::gamePause() {                                                
 // Diese Funktion wird aufgerufen, wenn aus dem Pausenmenue zurueck zum Spiel
 // gekehrt wird.
 void gameTemplate::gameReturn() {                                                                       // ##### MUSS ANGEPASST WERDEN (namespace) #####
+    // Option-Menue korrekt beenden.
+    optionMenu::menuExit();
+
     // Spiel-Bildschirm darstellen.                                                                     // ##### MUSS ANGEPASST WERDEN #####
     clearScreen();
 
