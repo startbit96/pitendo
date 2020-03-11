@@ -117,7 +117,7 @@ class Button {
         bool bPressed;          // Speichert, ob der Button seit dem letzten Abruf gedrueckt wurde.
 
         // Public-Attribute.
-        void (*buttonFunktion)(void); // Zeiger auf die hinter dem Button liegende Funktion.
+        void (*buttonFunction)(void); // Zeiger auf die hinter dem Button liegende Funktion.
                                     // (Bedarf noch unklar, evtl. wird Abfrage des Button-Status und 
                                     // die daraus folgende Aktion direkt im Spiel implementiert.)
 
@@ -152,9 +152,18 @@ class Joystick {
         ~Joystick();
 
         // Public-Methoden.
-        bool kalibrierung();    // Kalibriert die Joystick-Nulllage sowie die maximalen Auslenkungen.
-        void getPosition(float &x, float &y);   // Ermittelt die Joystick-Lage.
-                                                // Rueckgabewert zwischen -1.0f und 1.0f.
+        // Kalibriert die Joystick-Nulllage sowie die maximalen Auslenkungen.
+        bool calibration(   int &adcMeanX, int &adcMinX, int &adcMaxX,
+                            int &adcMeanY, int &adcMinY, int &adcMaxY);
+        void getCalibrationParameter(   int &adcMeanX, int &adcMinX, int &adcMaxX,
+                                        int &adcMeanY, int &adcMinY, int &adcMaxY);
+        
+        // Ermittelt die Rohwerte des 12bit-Analog-Digitalwandlers.
+        void getRawData(int &adcX, int &adcY);
+
+        // Ermittelt die Joystick-Lage. Rueckgabewert zwischen -1.0f und 1.0f.
+        void getPosition(float &x, float &y);   
+        
         // Die Funktion "getMovement" bietet die Moeglichkeit, den Cursor fuer Auswahl-Bewegungen
         // zu nutzen (z.B. im Hauptmenue.). Durch die regelmaessige Abfrage, wuerde der Cursor 
         // mehrere Zeilen springen, obwohl man nur eine Zeile springen moechte. Daher ist eine
@@ -166,8 +175,8 @@ class Joystick {
 
     private:
         int channelX, channelY;   // Gibt die Channels des AD-Wandlers an.
-        int adcMittelX, adcMinX, adcMaxX;   // Fuer die Bestimmung des Ausschlages des Joysticks.
-        int adcMittelY, adcMinY, adcMaxY;   // Diese Werte koennen durch die Kalibrierung veraendert werden.
+        int adcMeanX, adcMinX, adcMaxX;   // Fuer die Bestimmung des Ausschlages des Joysticks.
+        int adcMeanY, adcMinY, adcMaxY;   // Diese Werte koennen durch die Kalibrierung veraendert werden.
         const int nLengthIdle = 15;         // Fuer Funktion "getMovement" --> Wartezyklen bei Wiederabfrage.
         int idleUp, idleDown, idleLeft, idleRight;
 }; // Klasse Joystick.
@@ -197,12 +206,12 @@ class Controller {
         void execute();     // Fuehrt die Funktionen aller Buttons aus, sollten
                             // sie gedrueckt wurden sein.
         bool isConnected(); // Ueberprueft, ob Controller angeschlossen ist.
-        void setButtonFunctions(void (*buttonFunktionGruen)(void),      // Setzt mit einem Schlag alle Buttonfunktionen.
-                                void (*buttonFunktionRot)(void),
-                                void (*buttonFunktionGelb)(void),
-                                void (*buttonFunktionBlau)(void),
-                                void (*buttonFunktionStart)(void),
-                                void (*buttonFunktionJoystick)(void));
+        void setButtonFunctions(void (*buttonFunctionGruen)(void),      // Setzt mit einem Schlag alle Buttonfunktionen.
+                                void (*buttonFunctionRot)(void),
+                                void (*buttonFunctionGelb)(void),
+                                void (*buttonFunctionBlau)(void),
+                                void (*buttonFunctionStart)(void),
+                                void (*buttonFunctionJoystick)(void));
 
         // Public-Attribute.
         // Buttons.

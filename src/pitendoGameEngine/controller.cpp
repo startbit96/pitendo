@@ -69,7 +69,7 @@ Button::Button(int pinNummer) {
     // Attribute definieren.
     this->pinNummer = pinNummer;
     this->bPressed = false;
-    this->buttonFunktion = &Button::defaultButtonFunktion;
+    this->buttonFunction = &Button::defaultButtonFunktion;
     this->timeLastPressed = 0;
 
 } // Button::Button.
@@ -90,8 +90,8 @@ void Button::refresh() {
 // Ermittelt, ob der Button genau JETZT gedrueckt ist.
 // Umsetzung mittels Abfrage des GPIO-Pins.
 bool Button::isPressed() {
-    int digitalWert = digitalRead(this->pinNummer);
-    if (digitalWert == 0) {     // Pull-Up-Widerstand.
+    int digitalValue = digitalRead(this->pinNummer);
+    if (digitalValue == 0) {     // Pull-Up-Widerstand.
         // Button gedrueckt.
         return true;
     }
@@ -112,10 +112,10 @@ bool Button::wasPressed() {
         // Ueberpruefe, ob Zeit zwischen letzter Abfrage und dieser Abfrage
         // gross genug ist (filtere Tasterprellen heraus).
         unsigned int timePressed = millis();
-        // Wurde zufaellig unsigned int Grenze ueberschritten (aller 71 Minuten)?
+        // Wurde zufaellig unsigned int Grenze ueberschritten (aller 49 Tage)?
         if (timePressed < this->timeLastPressed) {
             // In diesem seltenen Fall funktioniert Software-Entprellung nicht.
-            // Koennte theoretisch noch behoben werden, aber naaeeehhh.
+            // Koennte theoretisch noch behoben werden, aber wird nicht benoetigt.
             bReturn = true;
             // Zeit neu abspeichern.
             this->timeLastPressed = timePressed;
@@ -173,11 +173,11 @@ Joystick::Joystick(int channelX, int channelY) {
     // der kalibrierten Werte, damit man dies nicht bei jedem Start durchfuehren muss.
     // X-Werte.
     this->adcMinX = 0;
-    this->adcMittelX = 2048;
+    this->adcMeanX = 2048;
     this->adcMaxX = 4096;       // Es handelt sich um eine 12-Bit-Auflösung am MCP3208. 2^12 = 4096.
     // Y-Werte.
     this->adcMinY = 0;
-    this->adcMittelY = 2048;
+    this->adcMeanY = 2048;
     this->adcMaxY = 4096;
 
     // Leerlauf-Zeiten fuer Cursor-Bewegungs-Abfrage.
@@ -195,9 +195,64 @@ Joystick::~Joystick() {
 
 
 // Kalibriert die Joystick-Nulllage sowie die maximalen Auslenkungen.
-bool Joystick::kalibrierung() {
-    return true;
-} // Joystick::kalibrierung.
+bool Joystick::calibration(int &adcMeanX, int &adcMinX, int &adcMaxX,
+                            int &adcMeanY, int &adcMinY, int &adcMaxY) {
+    // Die Kalibrierung an sich muss an anderer Stelle stattfinden, da sie mit Ausgaben am Bildschirm
+    // implementiert werden soll und sie diese jedoch nicht nutzen kann.
+    // Diese Funktion plausibilisiert lediglich die uebergebenen Werte.
+    if ((adcMinX < adcMeanX) && 
+        (adcMeanX < adcMaxX) &&
+        (adcMinY < adcMeanY) && 
+        (adcMeanY < adcMaxY)) {
+        // Plausibilitaets-Check i.O.
+        this->adcMeanX = adcMeanX;
+        this->adcMinX = adcMinX;
+        this->adcMaxX = adcMaxX;
+        this->adcMeanY = adcMeanY;
+        this->adcMinY = adcMinY;
+        this->adcMaxY = adcMaxY;
+        return true;
+    }
+    else {
+        // Daten unplausibel.
+        return false;
+    }
+} // Joystick::calibration.
+
+
+void Joystick::getCalibrationParameter(   int &adcMeanX, int &adcMinX, int &adcMaxX,
+                                int &adcMeanY, int &adcMinY, int &adcMaxY) {
+    adcMeanX = this->adcMeanX;
+    adcMinX = this->adcMinX;
+    adcMaxX = this->adcMaxX;
+    adcMeanY = this->adcMeanY;
+    adcMinY = this->adcMinY;
+    adcMinY = this->adcMaxY;
+} // Joystick::getCalibrationParameter.
+
+
+// Ermittelt die Rohwerte des 12bit-Analog-Digitalwandlers.
+void Joystick::getRawData(int &adcX, int &adcY) {
+    // Ermittlung x-Achse.
+    unsigned char data[3];
+    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
+    data[1] = this->channelX << 6;  // D1 und D0 je nach zu verwendenden Channel.
+    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
+    // Schreiben und Lesen ueber SPI.
+    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
+    // Umwandeln.
+    adcX = ((data[1]) << 8) + data[2];
+
+    // Ermittlung y-Achse.
+    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
+    data[1] = this->channelY << 6;  // D1 und D0 je nach zu verwendenden Channel.
+    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
+    // Schreiben und Lesen ueber SPI.
+    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
+    // Umwandeln.
+    adcY = ((data[1]) << 8) + data[2];
+
+} // Joystick::getRawData.
 
 
 // Ermittelt die Joystick-Lage.
@@ -207,55 +262,45 @@ void Joystick::getPosition(float &x, float &y) {
     // Die Werte aendern sich im Randbereich rapide. Eine Linearisierung waere durch eine 
     // entsprechende Versuchsreihe denkbar, wird jedoch noch nicht umgesetzt und die Notwendigkeit
     // abgewartet.
+
+    // Ermittlung der Rohdaten.
+    int adcX, adcY;
+    this->getRawData(adcX, adcY);
+
     // X-Achse.
-    unsigned char data[3];
-    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
-    data[1] = this->channelX << 6;  // D1 und D0 je nach zu verwendenden Channel.
-    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
-    // Schreiben und Lesen ueber SPI.
-    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
-    // Umwandeln.
-    int adcX = ((data[1]) << 8) + data[2];
     // Umwandeln des 12-Bit-Wertes in einen float-Wert zwischen -1.0f und 1.0f.
     // Je nach Einbaulage des Joysticks, muss hier noch am Vorzeichen gedreht werden.
-    if (adcX < this->adcMittelX) {
+    if (adcX < this->adcMeanX) {
         if (adcX < this->adcMinX) {     // Neukalibrierung notwendig?
             this->adcMinX = adcX;
         }
-        x = +(  (float)(this->adcMittelX - adcX) / 
-                (float)(this->adcMittelX - this->adcMinX));
+        x = +(  (float)(this->adcMeanX - adcX) / 
+                (float)(this->adcMeanX - this->adcMinX));
     }
     else {
         if (adcX > this->adcMaxX) {     // Neukalibrierung notwendig?
             this->adcMaxX = adcX;
         }
-        x = -(  (float)(adcX - this->adcMittelX) / 
-                (float)(this->adcMaxX - this->adcMittelX));
+        x = -(  (float)(adcX - this->adcMeanX) / 
+                (float)(this->adcMaxX - this->adcMeanX));
     }
 
     // Y-Achse.
-    data[0] = 0b00000110;           // Start-Bit=1, Single=1, D2=0.
-    data[1] = this->channelY << 6;  // D1 und D0 je nach zu verwendenden Channel.
-    data[2] = 0b00000000;           // Der Rest wird mit Infos ueberschrieben.
-    // Schreiben und Lesen ueber SPI.
-    wiringPiSPIDataRW(DEF_SPI_CHANNEL, data, 3);
-    // Umwandeln.
-    int adcY = ((data[1]) << 8) + data[2];
     // Umwandeln des 12-Bit-Wertes in einen float-Wert zwischen -1.0f und 1.0f.
     // Je nach Einbaulage des Joysticks, muss hier noch am Vorzeichen gedreht werden.
-    if (adcY < this->adcMittelY) {
+    if (adcY < this->adcMeanY) {
         if (adcY < this->adcMinY) {     // Neukalibrierung notwendig?
             this->adcMinY = adcY;
         }
-        y = -(  (float)(this->adcMittelY - adcY) / 
-                (float)(this->adcMittelY - this->adcMinY));
+        y = -(  (float)(this->adcMeanY - adcY) / 
+                (float)(this->adcMeanY - this->adcMinY));
     }
     else {
         if (adcY > this->adcMaxY) {     // Neukalibrierung notwendig?
             this->adcMaxY = adcY;
         }
-        y = +(  (float)(adcY - this->adcMittelY) / 
-                (float)(this->adcMaxY - this->adcMittelY));
+        y = +(  (float)(adcY - this->adcMeanY) / 
+                (float)(this->adcMaxY - this->adcMeanY));
     }
 } // Joystick::getPosition.
 
@@ -421,7 +466,7 @@ void Controller::refresh() {
 void Controller::execute() {
     for (int i = 0; i < DEF_NUM_BUTTONS; i++) {
         if (buttonHandler[i]->wasPressed() == true) {
-            buttonHandler[i]->buttonFunktion();
+            buttonHandler[i]->buttonFunction();
         }
     }
 } // Controller::execute.
@@ -429,8 +474,8 @@ void Controller::execute() {
 
 // Ueberprueft, ob Controller angeschlossen ist.
 bool Controller::isConnected() {
-    int digitalWert = digitalRead(this->pinCheck);
-    if (digitalWert == 0) {     // Pull-Up-Widerstand.
+    int digitalValue = digitalRead(this->pinCheck);
+    if (digitalValue == 0) {     // Pull-Up-Widerstand.
         // Controller angeschlossen.
         return true;
     }
@@ -441,18 +486,18 @@ bool Controller::isConnected() {
 } // Controller:isConnected.
 
 // Setzt mit einem Schlag alle Buttonfunktionen.
-void Controller::setButtonFunctions(void (*buttonFunktionGruen)(void),
-                        void (*buttonFunktionRot)(void),
-                        void (*buttonFunktionGelb)(void),
-                        void (*buttonFunktionBlau)(void),
-                        void (*buttonFunktionStart)(void),
-                        void (*buttonFunktionJoystick)(void)) {
-    this->buttonGruen->buttonFunktion = buttonFunktionGruen;
-    this->buttonRot->buttonFunktion = buttonFunktionRot;
-    this->buttonGelb->buttonFunktion = buttonFunktionGelb;
-    this->buttonBlau->buttonFunktion = buttonFunktionBlau;
-    this->buttonStart->buttonFunktion = buttonFunktionStart;
-    this->buttonJoystick->buttonFunktion = buttonFunktionJoystick;
+void Controller::setButtonFunctions(void (*buttonFunctionGruen)(void),
+                        void (*buttonFunctionRot)(void),
+                        void (*buttonFunctionGelb)(void),
+                        void (*buttonFunctionBlau)(void),
+                        void (*buttonFunctionStart)(void),
+                        void (*buttonFunctionJoystick)(void)) {
+    this->buttonGruen->buttonFunction = buttonFunctionGruen;
+    this->buttonRot->buttonFunction = buttonFunctionRot;
+    this->buttonGelb->buttonFunction = buttonFunctionGelb;
+    this->buttonBlau->buttonFunction = buttonFunctionBlau;
+    this->buttonStart->buttonFunction = buttonFunctionStart;
+    this->buttonJoystick->buttonFunction = buttonFunctionJoystick;
 } // Controller::setButtonFunctions.
 
 

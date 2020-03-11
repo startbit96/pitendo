@@ -228,6 +228,8 @@ GameEngine::GameEngine(int screenWidth, int screenHeight) {
 
     // Optionen-Menue definieren.
     this->optionMenu = new Menu(this->screenWidth, this->screenHeight);
+    this->optionMenu->addEntry("Kalibrierung Joystick Controller 1", &controllerCalibration::calibrateJoystickC1);
+    this->optionMenu->addEntry("Kalibrierung Joystick Controller 2", &controllerCalibration::calibrateJoystickC2);
     this->optionMenu->addEntry("Hauptmenue", &mainMenu::menuStart);
 
 } // GameEngine::GameEngine.
@@ -260,7 +262,7 @@ void GameEngine::adjustFPS() {
     unsigned int loopTimeNew = millis();
     // Sichergehen, dass Werte im zulaessigen Bereich sind und die unsigned int Grenze
     // nicht ueberlaufen wurde.
-    if (loopTimeNew > this->loopTimeOld) {
+    if (loopTimeNew >= this->loopTimeOld) {
         // Muss ueberhaupt noch gewartet werden oder hinken wir eh bereits hinterher?
         int delayTime = (int)(1000 / this->fps) - (loopTimeNew - this->loopTimeOld);
         if (delayTime > 0) {
@@ -327,6 +329,257 @@ bool GameEngine::resetOptionMenu() {
 void GameEngine::defaultGameEngineFunction() {
     // Mache einfach nix.
 } // GameEngine::defaultGameEngineFunction.
+
+
+
+// ##############################################################################
+// #####                        SONDERFUNKTIONEN                            #####
+// ##############################################################################
+
+// ---------------------- KLASSE CALIBRATION MANAGER ----------------------------
+
+// Konstruktor.
+controllerCalibration::CalibrationManager::CalibrationManager(Controller *controller) {
+    this->controller = controller;
+    // X-Werte.
+    this->adcMinX = 2048;
+    this->adcMeanX = 2048;
+    this->adcMaxX = 2048;
+    this->adcX = 2048;
+    // Y-Werte.
+    this->adcMinY = 2048;
+    this->adcMeanY = 2048;
+    this->adcMaxY = 2048;
+    this->adcY = 2048;
+    // Aktueller Status.
+    this->calibrationState = CALIBRATION_START;
+    // Verweildauern.
+    this->timePause = 60;           // Je laenger, desto mehr Zeit hat Nutzer, um aktuelle Aufgabe zu lesen.
+    this->timeMean = 200;           // Je laenger, desto mehr Messpunkte werden genutzt.
+    this->timeMinMax = 400;         // Je laenger, desto mehr Messpunkte werden genutzt.
+    this->timeNow = 0;
+    // Koordination der Bildschirmausgabe.
+    this->posY = 1;
+} // CalibrationManager::CalibrationManager.
+
+
+// Destruktor.
+controllerCalibration::CalibrationManager::~CalibrationManager() {
+    // Aktuell gibt es nichts zu tun.
+} // CalibrationManager::CalibrationManager.
+
+
+// Finale Kalibrierung vornehmen. Plausibilitaetspruefung wird von Klasse Joystick
+// durchgefuehrt und Ergebnis rueckgemeldet.
+bool controllerCalibration::CalibrationManager::calibrate() {
+    return this->controller->joystick->calibration( this->adcMeanX, 
+                                                    this->adcMinX, 
+                                                    this->adcMaxX,
+                                                    this->adcMeanY, 
+                                                    this->adcMinY, 
+                                                    this->adcMaxY);
+} // CalibrationManager::calibrate.
+
+
+
+// ------------------------- KALIBRIER-FUNKTIONEN -------------------------------
+
+
+
+
+// Unser Kalibrier-Objekt.
+controllerCalibration::CalibrationManager *calibrationManager;
+
+// Kalibrierung des Joysticks. Allgemeine Funktion.
+void controllerCalibration::calibrateJoystick() {
+    // Allgemeine Variablen.
+    int lengthProcessBar = 40;      // Laenge des Fortschrittbalkens in Anzahl Zeichen.
+    // Handlungen innerhalb dieser Funktion sind abhaenging von dem Status des 
+    // Kalibrierungs-Managers.
+    switch (calibrationManager->calibrationState) {
+        case CALIBRATION_START:
+            // Kalibrierung wurde soeben erst gestartet.
+            // Nimm einmalige Aktionen vor und starte folgend mit der Kalibrierung.
+            // Bildschirm loeschen.
+            clearScreen();
+            cout << "Starte Kalibrierung des Controllers ..." << endl << endl;
+            calibrationManager->posY += 2;
+            // Setze alle Buttons zurueck.
+            calibrationManager->controller->refresh();
+            // Wechsel in den naechsten Zustand.
+            calibrationManager->calibrationState = CALIBRATION_MEAN;
+            break;
+        case CALIBRATION_MEAN:
+            // Kalibrierung des Mittelpunkts.
+            if (calibrationManager->timeNow == 0) {
+                // Erstmaliger Durchlauf.
+                cout << "Kalibrierung des Mittelpunkts. Bitte Joystick nicht bewegen." << endl;
+                calibrationManager->posY++;
+                // Leeren Fortschrittsbalken zeichnen.
+                cout << "[";
+                for (int i = 0; i < lengthProcessBar; i++) cout << " ";
+                cout << "] 0%";
+            }
+            else if ((calibrationManager->timeNow > calibrationManager->timePause) &&
+                    (calibrationManager->timeNow <= (calibrationManager->timePause + calibrationManager->timeMean))){
+                // Messung des Mittelwertes. Davor wird noch eine gewisse Pausenzeit gewartet, damit
+                // der Anwender Zeit hat, die vorherige Aufforderung zu lesen und den Joystick entsprechend
+                // nach Anweisung zu benutzen.
+                // Ermittlung der aktuellen Joystick-Position.
+                calibrationManager->controller->joystick->getRawData(calibrationManager->adcX, calibrationManager->adcY);
+                // Bildung des Mittelpunktes mittels exponentieller Glaettung.
+                float weightingNewValue = 0.3f;
+                calibrationManager->adcMeanX = (int)(   (1.0f - weightingNewValue) * (float)(calibrationManager->adcMeanX) + 
+                                                        weightingNewValue * (float)(calibrationManager->adcX));
+                calibrationManager->adcMeanY = (int)(   (1.0f - weightingNewValue) * (float)(calibrationManager->adcMeanY) + 
+                                                        weightingNewValue * (float)(calibrationManager->adcY));
+                // Visualisierung am Bildschirm.
+                float process = (float)(calibrationManager->timeNow - calibrationManager->timePause) / (float)(calibrationManager->timeMean);
+                int posProcessBar = (int)(process * (float)(lengthProcessBar));
+                setCursorPosition(2, calibrationManager->posY);
+                for (int i = 0; i < posProcessBar; i++) cout << "=";
+                if (posProcessBar < lengthProcessBar) cout << ">";
+                setCursorPosition(4 + lengthProcessBar, calibrationManager->posY);
+                cout << (int)(100.0f * process) << "%";
+            }
+            else if (calibrationManager->timeNow > (calibrationManager->timePause + calibrationManager->timeMean)) {
+                // Kalibrierung des Mittelwerts abgeschlossen.
+                // Ausgabe des Ergebnisses.
+                calibrationManager->posY += 2;
+                setCursorPosition(1, calibrationManager->posY);
+                cout << "==> Kalibrierung des Mittelwertes abgeschlossen." << endl; calibrationManager->posY++;
+                cout << "   ==> adc-Wert x-Achse: " << calibrationManager->adcMeanX << endl; calibrationManager->posY++;
+                cout << "   ==> adc-Wert y-Achse: " << calibrationManager->adcMeanY << endl << endl; calibrationManager->posY += 2;
+                // Resette den Timer und wechsele in den naechsten Zustand.
+                calibrationManager->timeNow = 0;
+                calibrationManager->calibrationState = CALIBRATION_MIN_MAX;
+                break;
+            }
+            calibrationManager->timeNow++;
+            break;
+        case CALIBRATION_MIN_MAX:
+            // Kalibrierung der maximalen Auslenkungen.
+            if (calibrationManager->timeNow == 0) {
+                // Erstmaliger Durchlauf.
+                cout << "Kalibrierung der maximalen Auslenkungen. Bitte Joystick im Kreis bewegen." << endl;
+                calibrationManager->posY++;
+                // Leeren Fortschrittsbalken zeichnen.
+                cout << "[";
+                for (int i = 0; i < lengthProcessBar; i++) cout << " ";
+                cout << "] 0%";
+            }
+            else if ((calibrationManager->timeNow > calibrationManager->timePause) &&
+                    (calibrationManager->timeNow <= (calibrationManager->timePause + calibrationManager->timeMinMax))){
+                // Messung der maximalen Auslenkungen. Davor wird noch eine gewisse Pausenzeit gewartet, damit
+                // der Anwender Zeit hat, die vorherige Aufforderung zu lesen und den Joystick entsprechend
+                // nach Anweisung zu benutzen.
+                // Ermittlung der aktuellen Joystick-Position.
+                calibrationManager->controller->joystick->getRawData(calibrationManager->adcX, calibrationManager->adcY);
+                // Ueberpruefung, ob neue maximale Auslenkungen gemessen wurden.
+                // X-Achse.
+                if (calibrationManager->adcX < calibrationManager->adcMeanX) {
+                    if (calibrationManager->adcX < calibrationManager->adcMinX) {     // Neukalibrierung notwendig?
+                        calibrationManager->adcMinX = calibrationManager->adcX;
+                    }
+                }
+                else {
+                    if (calibrationManager->adcX > calibrationManager->adcMaxX) {     // Neukalibrierung notwendig?
+                        calibrationManager->adcMaxX = calibrationManager->adcX;
+                    }
+                }
+                // Y-Achse.
+                if (calibrationManager->adcY < calibrationManager->adcMeanY) {
+                    if (calibrationManager->adcY < calibrationManager->adcMinY) {     // Neukalibrierung notwendig?
+                        calibrationManager->adcMinY = calibrationManager->adcY;
+                    }
+                }
+                else {
+                    if (calibrationManager->adcY > calibrationManager->adcMaxY) {     // Neukalibrierung notwendig?
+                        calibrationManager->adcMaxY = calibrationManager->adcY;
+                    }
+                }
+                // Visualisierung am Bildschirm.
+                float process = (float)(calibrationManager->timeNow - calibrationManager->timePause) / (float)(calibrationManager->timeMinMax);
+                int posProcessBar = (int)(process * (float)(lengthProcessBar));
+                setCursorPosition(2, calibrationManager->posY);
+                for (int i = 0; i < posProcessBar; i++) cout << "=";
+                if (posProcessBar < lengthProcessBar) cout << ">";
+                setCursorPosition(4 + lengthProcessBar, calibrationManager->posY);
+                cout << (int)(100.0f * process) << "%";
+            }
+            else if (calibrationManager->timeNow > (calibrationManager->timePause + calibrationManager->timeMinMax)) {
+                // Kalibrierung der maximalen Auslenkungen abgeschlossen.
+                // Ausgabe des Ergebnisses.
+                calibrationManager->posY += 2;
+                setCursorPosition(1, calibrationManager->posY);
+                cout << "==> Kalibrierung der maximalen Auslenkungen abgeschlossen." << endl;
+                cout << "   ==> maximaler adc-Wert x-Achse: " << calibrationManager->adcMinX << endl;
+                cout << "   ==> minimaler adc-Wert x-Achse: " << calibrationManager->adcMaxX << endl << endl;
+                cout << "   ==> maximaler adc-Wert y-Achse: " << calibrationManager->adcMinY << endl;
+                cout << "   ==> minimaler adc-Wert y-Achse: " << calibrationManager->adcMaxY << endl << endl;
+                // Wechsele in den naechsten Zustand.
+                calibrationManager->calibrationState = CALIBRATION_READY;
+                break;
+            }
+            calibrationManager->timeNow++;
+            break;
+        case CALIBRATION_READY:
+            // Kalibrierung abgeschlossen.
+            // Ermittle einmalig Plausibilitaets-Ergebnis der Kalibrierung und gib
+            // Ergebnis am Bildschirm aus.
+            cout << "Plausibilisiere Kalibrierungsgroessen ..." << endl;
+            if (calibrationManager->calibrate() == true) {
+                // Kalibrierung erfolgreich.
+                cout << "==> Kalibrierungsgroessen plausibel und erfolgreich abgespeichert." << endl << endl;
+            }
+            else {
+                // Kalibrierung fehlgeschlagen.
+                cout << "==> Kalibrierungsgroessen unplausibel! Kalibrierung fehlgeschlagen." << endl << endl;
+            }    
+            // Informiere Nutzer ueber Moeglichkeit, ins Hauptmenue zurueckzukehren.
+            cout << "Roten Button druecken, um ins Menue zurueckzukehren." << endl;
+            // Gehe in den Leerlauf.
+            calibrationManager->calibrationState = CALIBRATION_IDLE;
+            break;
+        case CALIBRATION_IDLE:
+            // Leerlauf. Mache nichts, bis Nutzer den roten Button drueckt.
+            break;
+        case CALIBRATION_EXIT:
+            // Kalibrierung soll beendet werden.
+            // Gib Speicher wieder frei.
+            delete calibrationManager;
+            // Gehe zurueck in das Optionsmenue.
+            optionMenu::menuStart();
+            return;
+        default:
+            // Sollte eigentlich nicht vorkommen.
+            cout << "Fehler! Unbekannter Kalibrierungszustand." << endl;
+            break;
+    }
+    // Ueberpruefe, ob Abbruchknopf gedrueckt wurde.
+    // Falls ja, dann geh direkt in den Leerlauf-Modus und beende die Kalibrierung.
+    if (calibrationManager->controller->buttonRot->wasPressed() == true) {
+        calibrationManager->calibrationState = CALIBRATION_EXIT;
+    }
+} // controllerCalibration::calibrateJoystick.
+
+// Kalibrierung des Joysticks des ersten Controllers. 
+// Funktion fuer Funktionspointer des Optionen-Menues.
+void controllerCalibration::calibrateJoystickC1() {
+    // Objekt fuer Kalibrierung erzeugen.
+    calibrationManager = new CalibrationManager(controllerP1);
+    // Dauerschleife neu besetzen.
+    pitendoGE->gameEngineFunktion = &controllerCalibration::calibrateJoystick;
+} // controllerCalibration::calibrateJoystickC1.
+
+// Kalibrierung des Joysticks des zweiten Controllers. 
+// Funktion fuer Funktionspointer des Optionen-Menues.
+void controllerCalibration::calibrateJoystickC2() {
+    // Objekt fuer Kalibrierung erzeugen.
+    calibrationManager = new CalibrationManager(controllerP2);
+    // Dauerschleife neu besetzen.
+    pitendoGE->gameEngineFunktion = &controllerCalibration::calibrateJoystick;
+} // controllerCalibration::calibrateJoystickC1.
 
 
 

@@ -116,6 +116,68 @@ extern GameEngine* pitendoGE;
 
 
 // ##############################################################################
+// #####                        SONDERFUNKTIONEN                            #####
+// ##############################################################################
+
+namespace controllerCalibration {
+    // Zur Markierung des Status und Tracking der Handlung.
+    enum enumCalibrationState { CALIBRATION_START,
+                                CALIBRATION_MEAN,
+                                CALIBRATION_MIN_MAX,
+                                CALIBRATION_READY,
+                                CALIBRATION_IDLE,
+                                CALIBRATION_EXIT};
+
+    // Klasse fuer die Kalibrierung.
+    class CalibrationManager {
+        public:
+            CalibrationManager(Controller *controller); // Konstruktor.
+            ~CalibrationManager();      // Destruktor.
+            
+            // Kalibrierung auf Controller schreiben.
+            bool calibrate();
+
+            // Der zu kalibrierende Controller.
+            Controller *controller;
+
+            // Aktuelle Joystick-Werte.
+            int adcX, adcY;
+
+            // Kalibrierwerte.
+            int adcMeanX, adcMinX, adcMaxX;
+            int adcMeanY, adcMinY, adcMaxY;
+
+            // Zur Markierung des Status und Tracking der Handlung.
+            enumCalibrationState calibrationState;
+
+            // Verweildauern fuer die einzelnen Stati.
+            int timePause, timeMean, timeMinMax;
+
+            // Tracken der Dauer.
+            int timeNow;
+
+            // Koordination der Bildschirmausgabe.
+            int posY;
+        protected:
+
+        private:
+    }; // Klasse Calibration-Manager.
+
+    // Kalibrierung des Joysticks. Allgemeine Funktion fuer Dauerschleifenbehandlung.
+    void calibrateJoystick();
+
+    // Kalibrierung des Joysticks des ersten Controllers. 
+    // Funktion fuer Funktionspointer des Optionen-Menues.
+    void calibrateJoystickC1();
+
+    // Kalibrierung des Joysticks des zweiten Controllers. 
+    // Funktion fuer Funktionspointer des Optionen-Menues.
+    void calibrateJoystickC2();
+
+} // namespace controllerCalibration.
+
+
+// ##############################################################################
 // #####                        PITENDO-MENUES                              #####
 // ##############################################################################
 
