@@ -174,11 +174,11 @@ Joystick::Joystick(int channelX, int channelY) {
     // X-Werte.
     this->adcMinX = 0;
     this->adcMeanX = 2048;
-    this->adcMaxX = 4096;       // Es handelt sich um eine 12-Bit-Auflösung am MCP3208. 2^12 = 4096.
+    this->adcMaxX = 4095;       // Es handelt sich um eine 12-Bit-Auflösung am MCP3208. 2^12 = 4096. (-1 wegen Start bei 0)
     // Y-Werte.
     this->adcMinY = 0;
     this->adcMeanY = 2048;
-    this->adcMaxY = 4096;
+    this->adcMaxY = 4095;
 
     // Leerlauf-Zeiten fuer Cursor-Bewegungs-Abfrage.
     this->idleUp = 0; 
