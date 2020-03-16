@@ -6,55 +6,33 @@
 
 #IncludeRegexTransform: 
 
-../inc/pitendoGameEngine/controller.h
+../inc/flappy_bird/flappy_bird.h
+vector
+-
 
-../inc/pitendoGameEngine/display.h
+../inc/pitendo_game_engine/controller.h
+
+../inc/pitendo_game_engine/display.h
 string
 -
 vector
 -
 
-../inc/pitendoGameEngine/pitendo_game_engine.h
+../inc/pitendo_game_engine/pitendo_game_engine.h
 wiringPi.h
 -
 string
 -
 controller.h
-../inc/pitendoGameEngine/controller.h
+../inc/pitendo_game_engine/controller.h
 display.h
-../inc/pitendoGameEngine/display.h
+../inc/pitendo_game_engine/display.h
 
-../inc/template/template.h
-
-/home/pi/Documents/repos/pitendo/pitendo.cpp
+/home/pi/Documents/repos/pitendo/src/flappy_bird/flappy_bird.cpp
 iostream
 -
 pitendo_game_engine.h
-/home/pi/Documents/repos/pitendo/pitendo_game_engine.h
-template.h
-/home/pi/Documents/repos/pitendo/template.h
-
-/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.cpp
-pitendo_game_engine.h
-/home/pi/Documents/repos/pitendo/src/pitendoGameEngine/pitendo_game_engine.h
-stdlib.h
--
-iostream
--
-fstream
--
-sys/ioctl.h
--
-unistd.h
--
-algorithm
--
-
-/home/pi/Documents/repos/pitendo/src/template/template.cpp
-iostream
--
-pitendo_game_engine.h
-/home/pi/Documents/repos/pitendo/src/template/pitendo_game_engine.h
-template.h
-/home/pi/Documents/repos/pitendo/src/template/template.h
+/home/pi/Documents/repos/pitendo/src/flappy_bird/pitendo_game_engine.h
+flappy_bird.h
+/home/pi/Documents/repos/pitendo/src/flappy_bird/flappy_bird.h
 

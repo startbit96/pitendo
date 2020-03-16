@@ -161,20 +161,20 @@ void pitendoStartScreen() {
     // Button-Funktionen definieren.
     // Nach Druecken des Gruenen Buttons wird das Hauptmenue aufgerufen.
     controllerP1->setButtonFunctions(   &pitendoStart,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion);
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction);
     controllerP2->setButtonFunctions(   &pitendoStart,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion);
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction);
 
     // GameEngine aktualisieren.
-    pitendoGE->gameEngineFunktion = &controllerExecute;
+    pitendoGE->gameEngineFunction = &controllerExecute;
 
 } // pitendoStartScreen.
 
@@ -214,7 +214,7 @@ void pitendoDestroy() {
 // Konstruktor.
 GameEngine::GameEngine(int screenWidth, int screenHeight) {
     this->isRunning = true;
-    this->gameEngineFunktion = &defaultGameEngineFunction;
+    this->gameEngineFunction = &defaultGameEngineFunction;
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
     this->pitendoState = PITENDO_WAITING;
@@ -569,7 +569,7 @@ void controllerCalibration::calibrateJoystickC1() {
     // Objekt fuer Kalibrierung erzeugen.
     calibrationManager = new CalibrationManager(controllerP1);
     // Dauerschleife neu besetzen.
-    pitendoGE->gameEngineFunktion = &controllerCalibration::calibrateJoystick;
+    pitendoGE->gameEngineFunction = &controllerCalibration::calibrateJoystick;
 } // controllerCalibration::calibrateJoystickC1.
 
 // Kalibrierung des Joysticks des zweiten Controllers. 
@@ -578,7 +578,7 @@ void controllerCalibration::calibrateJoystickC2() {
     // Objekt fuer Kalibrierung erzeugen.
     calibrationManager = new CalibrationManager(controllerP2);
     // Dauerschleife neu besetzen.
-    pitendoGE->gameEngineFunktion = &controllerCalibration::calibrateJoystick;
+    pitendoGE->gameEngineFunction = &controllerCalibration::calibrateJoystick;
 } // controllerCalibration::calibrateJoystickC1.
 
 
@@ -603,7 +603,7 @@ void mainMenu::menuStart() {
     controllerP2->refresh();
 
     // Neuen Handler setzen.
-    pitendoGE->gameEngineFunktion = &mainMenu::menuHandler;
+    pitendoGE->gameEngineFunction = &mainMenu::menuHandler;
 
 } // mainMenu::menuStart.
 
@@ -656,7 +656,7 @@ void optionMenu::menuStart() {
     controllerP2->refresh();
 
     // Neuen Handler setzen.
-    pitendoGE->gameEngineFunktion = &optionMenu::menuHandler;
+    pitendoGE->gameEngineFunction = &optionMenu::menuHandler;
 
 } // optionMenu::menuStart.
 

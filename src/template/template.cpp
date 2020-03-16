@@ -47,7 +47,7 @@ void gameTemplate::gameStart() {                                                
     controllerP2->refresh();
 
     // Pitendo-Spielfunktion (fuer Dauerschleife) setzen.
-    pitendoGE->gameEngineFunktion = &gameTemplate::gameHandle;                                          // ##### MUSS ANGEPASST WERDEN (namespace) #####
+    pitendoGE->gameEngineFunction = &gameTemplate::gameHandle;                                          // ##### MUSS ANGEPASST WERDEN (namespace) #####
 
 } // gameTemplate::gameStart.
 
@@ -98,7 +98,7 @@ void gameTemplate::gameReturn() {                                               
     controllerP2->refresh();
 
     // Pitendo-Spielfunktion (fuer Dauerschleife) setzen.
-    pitendoGE->gameEngineFunktion = &gameTemplate::gameHandle;
+    pitendoGE->gameEngineFunction = &gameTemplate::gameHandle;
 
 } // gameTemplate::gameReturn.
 

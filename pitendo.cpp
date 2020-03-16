@@ -3,8 +3,11 @@
 
 // Spiele koennen hier eingeladen werden.
 #include "template.h"
+#include "flappy_bird.h"
+
 
 using namespace std;
+
 
 int main(int argc, char** argv) {
     // ##############################################################################
@@ -22,7 +25,7 @@ int main(int argc, char** argv) {
             return 1;
         }
         else { 
-            cerr << "Pitendo konnte nicht initialisiert werden." << endl;
+            cout << "Pitendo konnte nicht initialisiert werden." << endl;
             return -1;
         }
     }
@@ -32,7 +35,7 @@ int main(int argc, char** argv) {
         cout << "Pitendo erfolgreich eingerichtet." << endl;
     }
     else {
-        cerr << "Pitendo konnte nicht eingerichtet werden." << endl;
+        cout << "Pitendo konnte nicht eingerichtet werden." << endl;
         cout << "Zum Beenden ENTER druecken ..." << endl;
         cin.get(); // Nutzereingabe abwarten, damit Nutzer Zeit hat, Fehlermeldung zu lesen.
         return -1;
@@ -46,6 +49,7 @@ int main(int argc, char** argv) {
     
     // Spiele befinden sich spaeter in umgekehrter Reihenfolge im Menue.
     pitendoGE->addGame("Vorlage-Spiel", &gameTemplate::gameStart);
+    pitendoGE->addGame("Flappy Bird", &flappyBird::gameStart);
 
 
 
@@ -60,7 +64,7 @@ int main(int argc, char** argv) {
     // Dauerschleife.
     while(pitendoGE->isRunning == true) {
         // Die der Game-Engine hinterlegte Funktion ausfuehren.
-        pitendoGE->gameEngineFunktion();
+        pitendoGE->gameEngineFunction();
 
         // Display aktualisieren.
         cout << flush;

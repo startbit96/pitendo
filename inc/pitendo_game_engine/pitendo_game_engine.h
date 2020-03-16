@@ -1,3 +1,7 @@
+#ifndef _PITENDO_GAME_ENGINE_H_
+#define _PITENDO_GAME_ENGINE_H_
+
+
 /*
 ######################### PITENDO_GAME_ENGINE.H ###############################
 Tim Schwarzbrunn
@@ -9,9 +13,6 @@ der Bereitstellung einer terminalbasierten grafischen Benutzeroberflaeche aus.
 
 ###############################################################################
 */
-
-#ifndef _PITENDO_GAME_ENGINE_H_
-#define _PITENDO_GAME_ENGINE_H_
 
 #include <wiringPi.h>
 #include <string>
@@ -69,7 +70,7 @@ class GameEngine {
 
         // Die Funktion hinter diesem Zeiger wird bei jedem Dauerschleifendurchlauf
         // aufgerufen.
-        void (*gameEngineFunktion)(void);
+        void (*gameEngineFunction)(void);
 
         // Zeitliches Timing in der Dauerschleife.
         // Linux ist kein Echtzeit-Betriebssystem, daher sind die FPS eher als ueber 

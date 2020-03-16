@@ -104,7 +104,7 @@ Aenderungshistorie:
 class Button {
     public:
         // Konstruktur und Destruktor.
-        Button(int pinNummer);
+        Button(int pinNumber);
         ~Button();
 
         // Public-Methoden.
@@ -122,16 +122,16 @@ class Button {
                                     // die daraus folgende Aktion direkt im Spiel implementiert.)
 
         // Statische Methoden.
-        static void defaultButtonFunktion();    // Mit dieser Funktion wird jeder neue Button zu beginnt
+        static void defaultButtonFunction();    // Mit dieser Funktion wird jeder neue Button zu beginnt
                                                 // initialisiert. Sie macht i.d.R. gar nichts.
-        static void testButtonFunktion();       // Diese Funktion dient dem Hardware-Check.
+        static void testButtonFunction();       // Diese Funktion dient dem Hardware-Check.
                                                 // Bei Knopfdruck wird etwas auf den Bildschirm geschrieben.
     
     protected:
 
     private:
         // Private Attribute.
-        int pinNummer;          // GPIO-Nummer des digitalen Eingangs.
+        int pinNumber;          // GPIO-Nummer des digitalen Eingangs.
 
         // Software-Entprellen. Reine Hardware-Entprellung mittels Tiefpass funktioniert 
         // leider nicht so gut wie erhofft.

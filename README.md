@@ -38,6 +38,11 @@ fc-cache
 
 5. Das Projekt wird mittels cmake gelinkt und kompiliert. Gegebenfalls muss cmake heruntergeladen werden und die IDE angepasst werden.
 
+6. Aktivieren von SPI auf dem Raspberry Pi (unter Interface).
+```
+sudo raspi-config
+```
+
 
 
 # Übersicht der Dateien.

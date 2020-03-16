@@ -18,58 +18,58 @@ Controller* controllerP2;
 
 
 // Konstruktor.
-Button::Button(int pinNummer) {
+Button::Button(int pinNumber) {
     // WiringPi-Pin-Mode auf INPUT fuer Button-Pin setzen.
-    pinMode (pinNummer, INPUT);
+    pinMode (pinNumber, INPUT);
 
     // Interrupt setzen.
     // Memberfunktionen gehen leider nicht, daher muss fuer jeden Button eine eigene
     // Funktion hinterlegt werden.
-    switch (pinNummer) {
+    switch (pinNumber) {
         case DEF_PIN_BTN_GRUEN_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGruenC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonGruenC1);
             break;
         case DEF_PIN_BTN_ROT_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonRotC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonRotC1);
             break;
         case DEF_PIN_BTN_BLAU_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonBlauC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonBlauC1);
             break;
         case DEF_PIN_BTN_GELB_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGelbC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonGelbC1);
             break;
         case DEF_PIN_BTN_START_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonStartC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonStartC1);
             break;
         case DEF_PIN_BTN_JOYSTICK_C1:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonJoystickC1);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonJoystickC1);
             break;
         case DEF_PIN_BTN_GRUEN_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGruenC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonGruenC2);
             break;
         case DEF_PIN_BTN_ROT_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonRotC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonRotC2);
             break;
         case DEF_PIN_BTN_BLAU_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonBlauC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonBlauC2);
             break;
         case DEF_PIN_BTN_GELB_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonGelbC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonGelbC2);
             break;
         case DEF_PIN_BTN_START_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonStartC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonStartC2);
             break;
         case DEF_PIN_BTN_JOYSTICK_C2:
-            wiringPiISR (pinNummer, INT_EDGE_FALLING, &interruptButtonJoystickC2);
+            wiringPiISR (pinNumber, INT_EDGE_FALLING, &interruptButtonJoystickC2);
             break;
         default:
-            cerr << "Undefinierte pinNummer! Button::Button." << endl;
+            cout << "Undefinierte pinNumber! Button::Button." << endl;
     }
 
     // Attribute definieren.
-    this->pinNummer = pinNummer;
+    this->pinNumber = pinNumber;
     this->bPressed = false;
-    this->buttonFunction = &Button::defaultButtonFunktion;
+    this->buttonFunction = &Button::defaultButtonFunction;
     this->timeLastPressed = 0;
 
 } // Button::Button.
@@ -77,7 +77,7 @@ Button::Button(int pinNummer) {
 
 // Destruktor.
 Button::~Button() {
-    wiringPiISR (pinNummer, INT_EDGE_BOTH, NULL);
+    wiringPiISR (pinNumber, INT_EDGE_BOTH, NULL);
 } // Button::~Button.
 
 
@@ -90,7 +90,7 @@ void Button::refresh() {
 // Ermittelt, ob der Button genau JETZT gedrueckt ist.
 // Umsetzung mittels Abfrage des GPIO-Pins.
 bool Button::isPressed() {
-    int digitalValue = digitalRead(this->pinNummer);
+    int digitalValue = digitalRead(this->pinNumber);
     if (digitalValue == 0) {     // Pull-Up-Widerstand.
         // Button gedrueckt.
         return true;
@@ -145,16 +145,16 @@ bool Button::wasPressed() {
 
 // Mit dieser Funktion wird jeder neue Button zu Beginn initialisiert.
 // Sie macht i.d.R. gar nichts.
-void Button::defaultButtonFunktion() {
+void Button::defaultButtonFunction() {
     // Mache einfach nix.
-} // Button::defaultButtonFunktion.
+} // Button::defaultButtonFunction.
 
 
 // Diese Funktion dient dem Hardware-Check.
 // Bei Knopfdruck wird etwas auf den Bildschirm geschrieben.
-void Button::testButtonFunktion() {
+void Button::testButtonFunction() {
     cout << "Button gedrueckt." << endl;
-} // Button::testButtonFunktion.
+} // Button::testButtonFunction.
 
 
 // ##############################################################################
@@ -552,13 +552,13 @@ void interruptButtonJoystickC2(void) {
 bool controllerSetup() {
     // Initialisierung von wiringPi.
     if (wiringPiSetup() < 0) {
-        cerr << "WiringPi konnte nicht initialisiert werden!" << endl;
+        cout << "WiringPi konnte nicht initialisiert werden!" << endl;
         return false;
     }
 
     // Initialisierung der SPI-Schnittstelle.
     if (wiringPiSPISetup(DEF_SPI_CHANNEL, DEF_SPI_CLOCK_SPEED) < 0) {
-        cerr << "WiringPiSPI konnte nicht initialisiert werden!" << endl;
+        cout << "WiringPiSPI konnte nicht initialisiert werden!" << endl;
         return false;
     }
     
@@ -613,17 +613,17 @@ void controllerExecute() {
 // Deaktiviert die klasseneigenen Controller-Callbacks.
 // (sinnvoll, wenn Button-Handling durch separate Funktion betrieben wird.)
 void controllerDeactivate() {
-    controllerP1->setButtonFunctions(   &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion);
-    controllerP2->setButtonFunctions(   &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion,
-                                        &Button::defaultButtonFunktion);
+    controllerP1->setButtonFunctions(   &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction);
+    controllerP2->setButtonFunctions(   &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction,
+                                        &Button::defaultButtonFunction);
 } // controllerDeactivate.
 

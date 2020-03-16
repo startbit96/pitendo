@@ -91,7 +91,7 @@ void Menu::addEntry(string text, void (*menuFunction)(void), int position) {
         this->maxTextLength = text.length();
         // Befindet sich der Text innerhalb der zulaessigen Laenge?
         if (this->maxTextLength > (this->x_max - 2)) {
-            cerr << "Menue-Text zu lang!: " << text << endl;
+            cout << "Menue-Text zu lang!: " << text << endl;
         }
     }
 } // Menu::addEntry.
