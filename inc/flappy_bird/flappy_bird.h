@@ -16,7 +16,23 @@ Wird ein Rohr beruehrt, ist das Spiel vorbei.
 
 #include <vector>
 
+#define DEF_PIPE_DISTANCE               40
+#define DEF_PIPE_GATE_HEIGHT            20
+#define DEF_PIPE_WIDTH                  5
+#define DEF_TIME_PER_MOVEMENT           2
+
+#define DEF_PIPE_GATE_Y_WALL_DISTANCE   20
+#define DEF_PIPE_GATE_Y_GATE_DISTANCE   40
+
+#define DEF_BIRD_WIDTH                  9
+#define DEF_BIRD_HEIGHT                 4
+#define DEF_BIRD_ACC_FLYING             -4.0
+#define DEF_BIRD_ACC_FALLING            1.0
+#define DEF_BIRD_MAX_SPEED              15
+
+
 namespace flappyBird {
+
 
     // ##############################################################################
     // #####                        GRUNDFUNKTIONEN                             #####
@@ -50,7 +66,7 @@ namespace flappyBird {
             ~PlayingField();    // Destruktor.
 
             // Funktion zum Hinzufuegen eines neuen Rohres.
-            void addPipe();
+            void addPipe(int posY);
 
             // Funktion zum Zeichnen des Spielfeldes am Bildschirm.
             void draw();
@@ -61,13 +77,8 @@ namespace flappyBird {
             // Funktion zum Checken, ob eine Kollision vorliegt.
             bool checkForCollision(int posX1, int posX2, int posY1, int posY2);
 
+            // Eine Klasse fuer die Rohre. Ein Objekt beinhaltet immer sowohl das obere    int posY = this->posY;
 
-            // Timing.
-            int timeNow, timePerMovement;
-        protected:
-
-        private:
-            // Eine Klasse fuer die Rohre. Ein Objekt beinhaltet immer sowohl das obere
             // als auch das untere Rohr.
             class Pipe {
                 public:
@@ -91,9 +102,8 @@ namespace flappyBird {
 
                     // Funktion zum Checken, ob eine Kollision vorliegt.
                     bool checkForCollision(int posX1, int posX2, int posY1, int posY2);
-                protected:
 
-                private:
+
                     // Position der Rohre in x-Richtung. Diese Angabe bezieht sich auf
                     // den am weitesten links liegenden Punkt der Rohre.
                     int posX;
@@ -101,12 +111,9 @@ namespace flappyBird {
                     // Position des Durchganges in y-Richtung. Diese Angabe bezieht sich auf
                     // das Ende des oberen Rohres.
                     int posY;
+                protected:
 
-                    // Hoehe des Durchganges in y-Richtung.
-                    int gateHeight;
-
-                    // Breite der Rohre in x-Richtung.
-                    int pipeWidth;
+                private:
             }; // Klasse Rohr (Pipe).
 
             // Vektor von Rohren.
@@ -115,54 +122,49 @@ namespace flappyBird {
             // Anzahl von Rohren.
             int numberOfPipes;
 
-            // Horizontaler Abstand der Rohre.
-            int pipeDistance;
+            // Timing.
+            int timeNow;
+        protected:
 
-            // Vertikaler maximaler Abstand der Rohrdurchgaenge aufeinanderfolgender Rohre.
-            int maxPipeGateDistance;
-
-
-
+        private:
+            
     }; // Klasse Spielfeld (PlayingField).
 
-/*
+
+    // Klasse des zu steuernden Vogels.
     class Bird {
         public:
-            Bird(int posX, int posY);     // Konstruktor.
+            Bird();     // Konstruktor.
             ~Bird();    // Destruktor.
 
             // Funktion zum Zeichnen des Vogels am Bildschirm.
             void draw();
 
+            // Funktion zum Entfernen des Vogels am Bildschirm.
+            void remove();
+
             // Funktion zum Aufsteigen / nach oben fliegen.
             void fly();
 
+            // Funktion zur Neuberechnung der naechsten Position.
+            // Ist abhaengig von der Geschwindigkeit in y-Richtung.
+            // Einfluss hierauf nehmen die fest definierte Schwerkraft sowie die Nutzer-
+            // Eingaben abhaengige Beschleunigung durch das Fliegen.
+            void calculatePosition();
+
             // Position des Vogels erhalten.
-            getPosition(int &posX1, int &posX2, int &posY1, int &posY2);
+            void getPosition(int &posX1, int &posX2, int &posY1, int &posY2);
         protected:
 
         private:
             // Position in x und y. Diese beziehen sich auf den oberen linken Punkt.
+            // posX wird nach Erzeugung nicht mehr veraendet.
             int posX, posY;
-
-            // Hoehe und Breite des Vogels.
-            int width, height;
 
             // Geschwindigkeit des Vogels in y-Richtung. Dieser Wert wird durch die auf den Vogel
             // wirkende Beschleunigung (Fluegelschlag / Schwerkraft) dauerhaft beeinflusst.
             float speed;
-            float deltaSpeedGravity;
-            float deltaSpeedFlying;
-
-            // Zeitraum fuer Unterdrueckung eines weiteren Fluegelschlags.
-            int timeNow, timeIdle;
-
     }; // Klasse Vogel.
-
-
-    // Zeichnen des Game-Over-Bildschirms.
-    void gameOverScreen();
-*/
 
 }
 

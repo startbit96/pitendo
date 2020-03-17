@@ -28,8 +28,26 @@ controller.h
 display.h
 ../inc/pitendo_game_engine/display.h
 
+../inc/template/template.h
+
+/home/pi/Documents/repos/pitendo/pitendo.cpp
+iostream
+-
+pitendo_game_engine.h
+/home/pi/Documents/repos/pitendo/pitendo_game_engine.h
+template.h
+/home/pi/Documents/repos/pitendo/template.h
+flappy_bird.h
+/home/pi/Documents/repos/pitendo/flappy_bird.h
+
 /home/pi/Documents/repos/pitendo/src/flappy_bird/flappy_bird.cpp
 iostream
+-
+algorithm
+-
+stdlib.h
+-
+tgmath.h
 -
 pitendo_game_engine.h
 /home/pi/Documents/repos/pitendo/src/flappy_bird/pitendo_game_engine.h
