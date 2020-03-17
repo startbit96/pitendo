@@ -29,7 +29,7 @@ cd pitendo
 sudo apt-get install xterm
 ```
 
-4. Aktiviere die quadratische Schriftart "square":
+4. Aktiviere die quadratische Schriftart "square". Hierzu musst du dich in dem Ordner pitendo befinden:
 ```
 mkdir ~/.fonts
 cp res/square.ttf ~/.fonts/
