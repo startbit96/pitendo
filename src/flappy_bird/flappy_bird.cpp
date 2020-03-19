@@ -134,9 +134,17 @@ void flappyBird::gameHandle() {
 
         // Ueberpruefe auf Kollision.
         int posX1, posX2, posY1, posY2;
+        bool bCollision;            // Muss abgespeichert werden, da in Funktion checkForCollision
+                                    // auch die Anzahl der passierten Pipes ermittelt wird.
         // Vogel-Position ermitteln.
         bird->getPosition(posX1, posX2, posY1, posY2);
-        if (playground->checkForCollision(posX1, posX2, posY1, posY2) == true) {
+        // Kollision checken.
+        bCollision = playground->checkForCollision(posX1, posX2, posY1, posY2);
+        // Anzahl passierter Pipes darstellen.
+        setCursorPosition(1, 1);
+        cout << "SCORE: " << playground->numberOfPassedPipes;
+        // Bei Kollision Abbruch.
+        if (bCollision == true) {
             // Kollision erkannt.
             cout << flush;
             // Spiel fuer eine Sekunde pausieren, damit Nutzer Fehler erkennt.
@@ -217,6 +225,9 @@ PlayingField::PlayingField() {
     // Anzahl von Rohren.
     this->numberOfPipes = 0;
 
+    // Anzahl von bereits "bestandenen" Rohren.
+    this->numberOfPassedPipes = 0;
+
     // Timing.
     this->timeNow = 0;
 } // Konstruktor Klasse PlayingField.
@@ -269,8 +280,13 @@ void PlayingField::moveLeft() {
 
 // Funktion zum Checken, ob eine Kollision vorliegt.
 bool PlayingField::checkForCollision(int posX1, int posX2, int posY1, int posY2) {
+    Pipe::enumPipeInteraction pipeInteraction;
     for (int i = 0; i < this->numberOfPipes; i++) {
-        if (this->vectorPipes[i].checkForCollision(posX1, posX2, posY1, posY2) == true) {
+        pipeInteraction = this->vectorPipes[i].checkForCollision(posX1, posX2, posY1, posY2);
+        if (pipeInteraction == Pipe::PIPE_PASSED) {
+            this->numberOfPassedPipes++;
+        }
+        else if (pipeInteraction == Pipe::PIPE_COLLISION) {
             // Kollision festgestellt.
             return true;
         }
@@ -336,7 +352,7 @@ void PlayingField::Pipe::remove() {
 
 
 // Funktion zum Checken, ob eine Kollision vorliegt.
-bool PlayingField::Pipe::checkForCollision(int posX1, int posX2, int posY1, int posY2) {
+PlayingField::Pipe::enumPipeInteraction PlayingField::Pipe::checkForCollision(int posX1, int posX2, int posY1, int posY2) {
     // Ueberpruefe Uebereinstimmung in x-Richtung.
     if ((posX1 <= (this->posX + DEF_PIPE_WIDTH - 1)) && (posX2 >= this->posX)) {
         // x-Bereich ueberschneidet sich.
@@ -344,18 +360,28 @@ bool PlayingField::Pipe::checkForCollision(int posX1, int posX2, int posY1, int 
         if ((posY1 > this->posY) && (posY2 < (this->posY + DEF_PIPE_GATE_HEIGHT))) {
             // Befindet sich innerhalb des Rohr-Tores.
             // Keine Kollision.
-            return false;
+            // Jetzt gibt es zwei Varianten. 
+            // 1.: Vogel hat das Rohr noch nicht ganz ueberwunden.
+            // 2.: Vogel befindet sich an letzter Stelle des Rohres und hat es somit ueberwunden.
+            if (posX1 < (this->posX + DEF_PIPE_WIDTH - 1)) {
+                // Der Vogel hat es noch nicht ganz geschafft.
+                return PIPE_NO_COLLISION;
+            }
+            else {
+                // Vogel hat es geschafft.
+                return PIPE_PASSED;
+            }
         }
         else {
             // Befindet sich im Bereich der Rohre.
             // Kollision.
-            return true;
+            return PIPE_COLLISION;
         }
     }
     else {
         // x-Bereich ueberschneidet sich nicht.
         // Keine Kollision.
-        return false;
+        return PIPE_NO_COLLISION;
     }
 } // PlayingField::Pipe::checkForCollision.
 
@@ -496,6 +522,10 @@ void Bird::getPosition(int &posX1, int &posX2, int &posY1, int &posY2) {
 void gameOverScreen() {
     // Bildschirm loeschen.
     clearScreen();
+
+    // Anzahl passierter Pipes darstellen.
+    setCursorPosition(1, 1);
+    cout << "SCORE: " << playground->numberOfPassedPipes;
 
     // Game-Over anzeigen.
     int posX = (int)((pitendoGE->screenWidth - 90) / 2);

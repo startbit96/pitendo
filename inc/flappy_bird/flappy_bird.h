@@ -16,13 +16,13 @@ Wird ein Rohr beruehrt, ist das Spiel vorbei.
 
 #include <vector>
 
-#define DEF_PIPE_DISTANCE               40
-#define DEF_PIPE_GATE_HEIGHT            20
+#define DEF_PIPE_DISTANCE               45
+#define DEF_PIPE_GATE_HEIGHT            24
 #define DEF_PIPE_WIDTH                  5
 #define DEF_TIME_PER_MOVEMENT           2
 
-#define DEF_PIPE_GATE_Y_WALL_DISTANCE   20
-#define DEF_PIPE_GATE_Y_GATE_DISTANCE   40
+#define DEF_PIPE_GATE_Y_WALL_DISTANCE   10
+#define DEF_PIPE_GATE_Y_GATE_DISTANCE   50
 
 #define DEF_BIRD_WIDTH                  9
 #define DEF_BIRD_HEIGHT                 4
@@ -101,7 +101,13 @@ namespace flappyBird {
                     bool moveLeft();
 
                     // Funktion zum Checken, ob eine Kollision vorliegt.
-                    bool checkForCollision(int posX1, int posX2, int posY1, int posY2);
+                    // Ueberprueft ausserdem, ob ein Rohr erfolgreich passiert wurde.     
+                    enum enumPipeInteraction {
+                        PIPE_COLLISION,
+                        PIPE_NO_COLLISION,
+                        PIPE_PASSED
+                    };
+                    enumPipeInteraction checkForCollision(int posX1, int posX2, int posY1, int posY2);
 
 
                     // Position der Rohre in x-Richtung. Diese Angabe bezieht sich auf
@@ -121,6 +127,9 @@ namespace flappyBird {
 
             // Anzahl von Rohren.
             int numberOfPipes;
+
+            // Anzahl von bereits "bestandenen" Rohren.
+            int numberOfPassedPipes;
 
             // Timing.
             int timeNow;
